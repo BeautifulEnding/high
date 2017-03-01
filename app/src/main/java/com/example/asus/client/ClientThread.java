@@ -30,6 +30,7 @@ public class ClientThread extends Thread{
         this.socket=socket;
         this.context=context;
         try{
+
 //            reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
             reader=new ObjectInputStream(socket.getInputStream());
         }catch (IOException e){
@@ -50,6 +51,7 @@ public class ClientThread extends Thread{
                         context.sendBroadcast(intent);
                         break;
                     default:
+
                         break;
                 }
             }catch (Exception e){
