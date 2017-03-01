@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <!--定义一个ImageView，用于作为列表项的一部分-->
+    <LinearLayout
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
+        android:orientation="horizontal"
+        android:id="@+id/header2">
+        <ImageView
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:id="@+id/header"
+            />
+        </LinearLayout>
+    <!--定义一个TextView，用于作为列表项的一部分-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:textSize="@dimen/text_size"
+        android:layout_below="@id/header2"
+        android:layout_marginTop="10dp"
+        android:textStyle="italic"
+        android:textColor="@color/send_itemthree_color"
+        />
+</RelativeLayout>

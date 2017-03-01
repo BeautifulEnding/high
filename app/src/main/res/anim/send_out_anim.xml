@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--定义平移变换-->
+    <!--从布局应该在的位置平移到屏幕底端-->
+    <!--<translate android:duration="300"
+        android:fromYDelta="0%p"
+        android:toYDelta="100%p"/>-->
+    <translate android:duration="300"
+        android:fromYDelta="0%p"
+        android:toYDelta="100%p"/>
+</set>

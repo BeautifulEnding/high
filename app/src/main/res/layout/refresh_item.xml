@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/retweet_weibo_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/timeline_feedcard_retweet_background_auto"
+    android:clickable="true"
+    android:orientation="vertical">
+    <include layout="@layout/home_weiboitem_titlebar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/divider"
+        android:id="@+id/center"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/content"
+                android:textSize="@dimen/text_size"
+                />
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:horizontalSpacing="3dp"
+                android:verticalSpacing="2dp"
+                android:id="@+id/image"
+                android:layout_below="@id/content"
+                android:background="@color/bg_color"
+                >
+            </GridView>
+        </RelativeLayout>
+    </RelativeLayout>
+    <include layout="@layout/mainfragment_weiboitem_bottombar" />
+</LinearLayout>

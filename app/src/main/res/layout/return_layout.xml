@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/actionBarSize"
+    android:orientation="horizontal"
+    android:background="@android:color/black"
+    android:id="@+id/one"
+    android:gravity="center_vertical"
+    >
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_weight="1"
+        android:id="@+id/reverse"
+        android:background="@drawable/left"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:textSize="@dimen/text_size"
+        android:textColor="@android:color/white"
+        android:text="个人信息"
+        android:layout_toRightOf="@id/reverse"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:id="@+id/messageTextView"
+        />
+</LinearLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.asus.he"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="21" />
+    <!-- 获取网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 获取SD卡权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 获得使用摄像头的权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--自启动-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/label"
+        android:label="@string/app_name"
+        android:persistent="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.example.asus.activity.MainActivity"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            />
+        <activity android:name="com.example.asus.activity.LoginActivity">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </activity>
+        <activity
+            android:name="com.example.asus.activity.IndexActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:launchMode="singleInstance"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.asus.activity.SettingActivity"
+            android:label="@string/action_settings">
+            <intent-filter>
+                <action android:name="this.is.setting.activity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.asus.activity.MessageActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name="com.example.asus.activity.BaseActivity" />
+
+        <service android:name="com.example.asus.service.SendService" />
+
+        <activity android:name="com.example.asus.activity.SendActivity">
+            <intent-filter>
+                <action android:name="next.is.send.activity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.example.asus.activity.TrueSettingActivity" />
+        <activity android:name="com.example.asus.activity.PhotoActivity" />
+        <activity android:name="com.example.asus.activity.ImageDetailsActivity" />
+        <activity
+            android:name="com.example.asus.activity.IdeaActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.example.asus.activity.OriginPicTextCommentDetailActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.example.asus.activity.SendContentActivity"
+            android:theme="@style/sendcontentactivity_style" />
+        <activity
+            android:name="com.example.asus.activity.RetweetPicTextCommentDetailActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.lidong.photopicker.PhotoPickerActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/PhotoPickerTheme" />
+        <activity
+            android:name="com.lidong.photopicker.PhotoPreviewActivity"
+            android:theme="@style/PhotoPickerTheme" />
+
+        <receiver android:name="com.example.asus.broadreceiver.SendReceiver">
+            <intent-filter>
+                <action android:name="high.send.broadcast" />
+            </intent-filter>
+        </receiver>
+        <!-- android:windowSoftInputMode="stateAlwaysHidden|adjustPan" -->
+        <activity
+            android:name="com.example.asus.activity.AddTopicActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity android:name="com.example.asus.activity.AddFriend"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        <service android:name="com.example.asus.service.ReceiveService"/>
+        <service android:name="com.example.asus.service.SendService"
+            />
+        <service android:name="com.example.asus.service.BootService"
+            android:process=":BootService"
+            android:priority="1000"
+            >
+        </service>
+        <receiver android:name="com.example.asus.broadreceiver.LaunchReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="bootService.destroy" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.asus.broadreceiver.BootReceiver">
+            <intent-filter>
+                <action android:name="start.bootService"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

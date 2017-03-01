@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--指定动画匀速改变-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/linear_interpolator">
+    <!--定义平移变换-->
+    <translate android:duration="300"
+        android:fromYDelta="?android:attr/actionBarSize"
+        android:toYDelta="1000"/>
+    <!--定义透明度变换-->
+    <alpha android:fromAlpha="1.0"
+        android:toAlpha="0.0"
+        android:duration="300">
+    </alpha>
+</set>

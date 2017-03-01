@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/totalLayout">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/black"
+        android:id="@+id/head">
+        <ImageView
+            android:layout_width="@dimen/small_photo_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/left"
+            android:id="@+id/imageView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/image"
+            android:textColor="@color/bg_color"
+            android:textSize="@dimen/text_size"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginStart="44dp" />
+        <Button
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/small_button_size"
+            android:layout_alignParentRight="true"
+            android:text="@string/complish"
+            android:background="@drawable/button_unenable"
+            android:textColor="@color/divider_color"
+            android:id="@+id/send_button"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:enabled="false"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/view"
+        android:background="@color/bg_color"
+        android:layout_below="@id/head"/>
+    <GridView
+        android:id="@+id/id_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:clipChildren="true"
+        android:gravity="center"
+        android:horizontalSpacing="3dip"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="3dip"
+        android:layout_below="@+id/head"
+        android:layout_alignParentStart="true">
+    </GridView>
+
+    <RelativeLayout
+        android:id="@+id/id_bottom_ly"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:background="#e0000000"
+        android:clickable="true" >
+
+        <TextView
+            android:id="@+id/id_choose_dir"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:text="所有图片"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/id_total_count"
+            android:layout_width="50dip"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="0张"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

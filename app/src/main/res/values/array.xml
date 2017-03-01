@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="topic">
+        <item>所有</item>
+        <item>帮助</item>
+        <item>约</item>
+        <item>we are one</item>
+        <item>自定义</item>
+    </string-array>
+    <string-array name="setting_list">
+        <item>我的相册</item>
+        <item>我的评论</item>
+        <item>我的点赞</item>
+    </string-array>
+    <string-array name="user_setting_list">
+        <item>账号</item>
+        <item>用户名</item>
+        <item>手机号</item>
+        <item>个人介绍</item>
+        <item>性别</item>
+        <item>生日</item>
+    </string-array>
+    <string-array name="send_format_list">
+        <item>文字</item>
+        <item>帮助</item>
+        <item>约</item>
+        <item>together</item>
+    </string-array>
+    <!--没加true的setting都与个人信息关系大些，后来改成我-->
+    <string-array name="true_setting_list">
+        <item>新消息提醒</item>
+        <item>接收消息类型</item>
+        <item>勿扰模式</item>
+        <item>聊天</item>
+        <item>隐私</item>
+        <item>通用</item>
+        <item>账号与安全</item>
+    </string-array>
+    <string-array name="limit">
+        <item>谁可以看</item>
+        <item>提醒谁看</item>
+    </string-array>
+    <string-array name="index_search_friends">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
+</resources>

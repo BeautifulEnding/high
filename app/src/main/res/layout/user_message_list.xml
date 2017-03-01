@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_padding">
+    <!--定义一个ImageView，用于作为列表项的一部分-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/message"
+        android:textSize="@dimen/text_size"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center"/>
+    <!--定义一个TextView，用于作为列表项的一部分-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/content"
+        android:textSize="@dimen/text_size"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+</RelativeLayout>

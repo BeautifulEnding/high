@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.asus.ui.BottomControlPanel
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:gravity="center_vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/topbar_bg"
+    >
+    <com.example.asus.ui.ImageText
+        android:id="@+id/btn_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"/>
+    <com.example.asus.ui.ImageText
+        android:id="@+id/btn_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btn_show"
+        android:layout_toLeftOf="@+id/btn_send"/>
+    <com.example.asus.ui.ImageText
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBaseline="@id/btn_message"
+        />
+    <com.example.asus.ui.ImageText
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btn_send"
+        android:layout_toLeftOf="@+id/btn_setting"
+         />
+    <com.example.asus.ui.ImageText
+        android:id="@+id/btn_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        />
+
+</com.example.asus.ui.BottomControlPanel>

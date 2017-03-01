@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <!--定义多个菜单项-->
+        <item android:title="@string/show"
+            android:id="@+id/show"></item>
+        <item
+            android:id="@+id/notshow"
+            android:title="@string/notshow"/>
+
+    </group>
+</menu>

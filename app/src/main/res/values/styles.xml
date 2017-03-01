@@ -1,0 +1,51 @@
+<resources>
+    <style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar">
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+    </style>
+    <style name="textStyle" >
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="anim_popup_dir">
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
+    <!-- 设置ActionBar菜单字体 -->
+    <style name="ActionMenuTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textSize">@dimen/action_text_size</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="actionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
+
+    <style name="actionBarPopupTheme" parent="ThemeOverlay.AppCompat.Light">
+    </style>
+
+    <style name="PhotoPickerTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/photopicker_background</item>
+        <item name="actionMenuTextAppearance">@style/ActionMenuTextStyle</item>
+        <!--<item name="actionBarTheme">@style/actionBarTheme</item>-->
+        <!--<item name="actionBarPopupTheme">@style/actionBarPopupTheme</item>-->
+    </style>
+
+    <!-- 时间线上，单条微博的右上角的箭头，点击后弹出pop的动画 -->
+    <style name="weiboitem_arrow_popwup_style">
+        <item name="android:windowEnterAnimation">@anim/home_weiboitem_arrow_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/home_weiboitem_arrow_popup_exit</item>
+    </style>
+    <style name="spinner_style">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="sendcontentactivity_style" parent="android:Theme.Light.NoTitleBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:activityCloseExitAnimation">@anim/send_out_anim</item>
+        <item name="android:activityOpenExitAnimation">@anim/send_out_anim</item>
+    </style>
+</resources>

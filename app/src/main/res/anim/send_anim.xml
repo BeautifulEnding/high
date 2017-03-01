@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!--指定动画匀速改变-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+           android:interpolator="@android:anim/linear_interpolator">
+    <!--定义平移变换-->
+    <!--从屏幕底端平移到布局应该在的位置-->
+    <translate android:duration="300"
+               android:fromYDelta="100%p"
+               android:toYDelta="0%p"/>
+
+</set>

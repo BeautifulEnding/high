@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--定义平移变换-->
+    <translate android:duration="300"
+        android:fromYDelta="1920"
+        android:toYDelta="1070"/>
+</set>
