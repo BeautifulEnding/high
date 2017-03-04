@@ -112,6 +112,9 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
                     if (!cache){
 //                        如果没有缓存，刷新数据
                         refreshData();
+                    }else{
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        noContentView.setVisibility(View.GONE);
                     }
                 } else {
 //                    需要刷新

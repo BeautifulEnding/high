@@ -49,14 +49,11 @@ public class BootService extends Service {
         // TODO Auto-generated method stub
         if (intent.hasExtra("user")){
 //            user=intent.getParcelableExtra("user");
-            LogUtil.e("从intent中获得user");
             user=(User) intent.getSerializableExtra("user");
         }else{
             user= CacheUtil.cacheLoad("selfMessage",this);
-            LogUtil.e("从cache中获得user");
         }
         if (user!=null){
-            LogUtil.e("BootService user不为空");
             client=new Client(user,this);
             client.start();
             ManageClientThread.addClientConServerThread(user,client);

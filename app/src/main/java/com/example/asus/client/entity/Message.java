@@ -1,5 +1,9 @@
 package com.example.asus.client.entity;
 
+import android.text.TextUtils;
+
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 public class Message implements Serializable{
     int type;
@@ -67,6 +71,14 @@ public class Message implements Serializable{
     }
     public void setSendTime(long sendTime) {
         this.sendTime = sendTime;
+    }
+
+    public static Message parse(String jsonString) {
+        if (TextUtils.isEmpty(jsonString)) {
+            return null;
+        }
+        Message message = new Gson().fromJson(jsonString, Message.class);
+        return message;
     }
 
 }

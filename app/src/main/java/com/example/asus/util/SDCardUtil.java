@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SD卡相关的辅助类
@@ -123,5 +125,41 @@ public class SDCardUtil {
         return null;
     }
 
+    public static List<String> get(Context context, String fileDir) {
+        String[] files=getAllFile(fileDir);
+        List<String> messageList=new ArrayList<>();
+        if (files!=null){
+            for (int i=0;i<files.length;i++){
+                StringBuffer sb = null;
+                try {
+                    File file = new File(fileDir,files[i]);
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+                    String readline = "";
+                    sb = new StringBuffer();
+                    while ((readline = br.readLine()) != null) {
+                        sb.append(readline);
+                    }
+                    br.close();
+                    messageList.add(sb.toString());
+                    //Toast.makeText(context, fileName + "文件读取成功", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //Toast.makeText(context, fileName + "文件读取失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            return messageList;
+        }
+        return null;
+    }
+
+    public static String[] getAllFile(String filePath){
+        File defaultFile=new File(filePath);
+        if (defaultFile.exists()){
+            String[] fileExist=defaultFile.list();
+            return fileExist;
+        }
+        return null;
+    }
 
 }

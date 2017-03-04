@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import com.example.asus.client.Client;
 import com.example.asus.client.ManageClientThread;
 import com.example.asus.client.entity.Message;
+import com.example.asus.client.entity.MessageType;
 import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
 import com.example.asus.fragment.BaseFragment;
@@ -38,6 +39,9 @@ import com.example.asus.util.CacheUtil;
 import com.example.asus.util.LogUtil;
 import com.example.asus.util.NotificationUtil;
 import com.example.asus.util.TagUtil;
+import com.google.gson.Gson;
+
+import java.io.Serializable;
 
 public class MainActivity extends BaseActivity implements BottomControlPanel.BottomPanelCallback{
     //定义SengFragment的顶部图片
@@ -74,29 +78,21 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
     public interface UpdateRecyclerView{
         public void updateRecyclerView();
     }
+    public Client client;
     private UpdateRecyclerView updateRecyclerView;
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        Intent intent=new Intent();
-        intent.setAction("start.bootService");
         User user= CacheUtil.cacheLoad("selfMessage",this);
-        /*if (user!=null){
-            LogUtil.e("mainActivity      User不为空");
-            intent.putExtra("user",user);
+        if (user!=null){
+            client=new Client(user,this);
+            client.start();
+//            ManageClientThread.addClientConServerThread(user,client);
         }else{
-            LogUtil.e("mainActivity      user为空");
+            LogUtil.e("BootService user为空");
         }
-        sendBroadcast(intent);*/
-        Client client=new Client(user,this);
-        client.start();
-        ManageClientThread.addClientConServerThread(user,client);
-//        LogUtil.e("mainActivity当前进程名-------------->"+ AndroidUtil.getCurProcessName(this));
-        /*//设置全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         MyApplication.getInstance().addActivity(this);
         topSp=this.getSharedPreferences("topic",MODE_PRIVATE);
         editor=topSp.edit();
@@ -158,11 +154,27 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
         @Override
         public void onReceive(Context context, Intent intent) {
             Message message=(Message) intent.getSerializableExtra("message");
-            if (currFragTag==Constant.FRAGMENT_FLAG_SEARCH){
-//                如果当前的fragment就是好友页，则直接更新newFragment的布局
-                newsFragment.updateRecyclerView(message);
+            if (message.getType()== MessageType.ADD_FRIEND){
+                client.setMessage(new Gson().toJson(message));
             }else{
-                NotificationUtil.showHangNotification(message,context);
+                CacheUtil.cacheSave(message.getSender_id(),MainActivity.this,message);
+                if (message.getType()==MessageType.RECEIVE_FRIEND){
+//                      当接收到别人请求添加我为好友时，更新好友界面，
+// 如果当前页面时好友页面，则直接更新，否则发通知，当用户切换到好友页面时，再更新好友页面
+//                    LogUtil.e("接收到好友请求");
+                    if (currFragTag==Constant.FRAGMENT_FLAG_SEARCH){
+//                        LogUtil.e("更新newFragment");
+                        newsFragment.updateRecyclerView(message);
+                    }else{
+                        NotificationUtil.showHangNotification(message,MainActivity.this);
+//                        LogUtil.e("发送通知");
+                    }
+                }else{
+//                    转换fragment
+//                    LogUtil.e("通知被点击");
+                    changeFragment(Constant.BTN_FLAG_SEARCH);
+//                    newsFragment.updateRecyclerView((Message) intent.getSerializableExtra("message"));
+                }
             }
         }
     }

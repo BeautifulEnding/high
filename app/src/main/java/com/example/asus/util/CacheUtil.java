@@ -2,6 +2,8 @@ package com.example.asus.util;
 
 import android.content.Context;
 
+import com.example.asus.client.entity.Message;
+import com.example.asus.client.entity.MessageList;
 import com.example.asus.client.entity.User;
 import com.example.asus.entity.Content;
 import com.example.asus.entity.ContentList;
@@ -9,6 +11,7 @@ import com.example.asus.view.HomeFragmentView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/2/23 0023.
@@ -40,7 +43,13 @@ public class CacheUtil {
         }
 
     }
-
+    public static void cacheSave(String fileName, Context context, Message messageList){
+        String response = new Gson().toJson(messageList);
+        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/requestFriend", fileName+ ".txt", response);
+    }
+    public static void cacheDelete(){
+//        删除请求添加好友信息
+    }
     public static boolean cacheLoad(String topic, Context context, ArrayList<Content> contents, HomeFragmentView homeFragmentView) {
         LogUtil.e("正在加载缓存");
         String response = null;
@@ -82,4 +91,19 @@ public class CacheUtil {
         }
         return null;
     }
+
+    public static List<Message> cacheLoad(Context context) {
+        LogUtil.e("正在加载缓存");
+        List<String> response;
+        List<Message> messages=new ArrayList<>();
+        response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/requestFriend");
+        if (response!=null && response.size()!=0){
+            for (int i=0;i<response.size();i++){
+                messages.add(Message.parse(response.get(i)));
+            }
+            return messages;
+        }
+        return null;
+    }
+
 }

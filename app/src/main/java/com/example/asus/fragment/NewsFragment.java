@@ -25,6 +25,7 @@ import com.example.asus.activity.AddFriend;
 import com.example.asus.activity.MainActivity;
 import com.example.asus.adapter.FriendRequestAdapter;
 import com.example.asus.client.entity.Message;
+import com.example.asus.client.entity.MessageList;
 import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
@@ -107,6 +108,14 @@ public class NewsFragment extends BaseFragment{
 		LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(friendRequestAdapter);
+//		加载好友请求
+		List<Message> messages=CacheUtil.cacheLoad(getActivity());
+		if (messages != null && messages.size()!=0){
+			LogUtil.e("加载到好友请求:  "+messages.get(0).getContent());
+			for (int i=0;i<messages.size();i++){
+				updateRecyclerView(messages.get(i));
+			}
+		}
 	}
 	private void initEvent(){
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -200,7 +209,6 @@ public class NewsFragment extends BaseFragment{
 				ToastUtil.show(getActivity(),"该用户不存在",Toast.LENGTH_SHORT);
 			}
 		}else{
-			CacheUtil.cacheSave(user.getId(),getActivity(),user);
 			friendRequestAdapter.setUser(user);
 			friendRequestAdapter.notifyDataSetChanged();
 		}

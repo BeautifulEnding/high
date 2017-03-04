@@ -12,4 +12,7 @@ public class MessageType {
     public static final int RET_ONLINE_FRIENDS=5;//返回在线好友的包
     public static final int ADD_FRIEND=6;//请求添加好友
     public static final int LOGIN=7;//请求验证登陆
+    public static final int USER_MESSAGE=8;//发送用户消息
+    public static final int RECEIVE_FRIEND=9;
+    public static final int NOTIFICATION=10;
 }

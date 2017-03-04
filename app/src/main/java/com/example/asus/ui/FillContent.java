@@ -68,9 +68,8 @@ public class FillContent {
     //        填充正文的顶部布局
     public static void fillTitleBar(Context context, Content content, ImageView user_photo, TextView user_id,TextView send_time,TextView comefrom){
         //        填充头像
-//        Glide.with(context).load(Constant.USER_PHOTO+content.getUser_photo()).placeholder(R.color.gray).dontAnimate().dontTransform().into(user_photo);
-        user_photo.setBackground(Drawable.createFromPath(Constant.USER_PHOTO+content.getUser_photo()));
-        LogUtil.e("用户图像地址"+ Constant.USER_PHOTO+content.getUser_photo());
+        Glide.with(context).load(Constant.USER_PHOTO+content.getUser_photo()).placeholder(R.drawable.example_profileimg).dontAnimate().dontTransform().into(user_photo);
+//        LogUtil.e("用户图像地址"+ Constant.USER_PHOTO+content.getUser_photo());
 //        填充用户名
         user_id.setText(content.getId());
 //        填充发布时间,现在为毫秒值

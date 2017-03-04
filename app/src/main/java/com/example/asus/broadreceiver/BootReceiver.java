@@ -22,7 +22,7 @@ public class BootReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent){
        if (!isServiceRunning(context,"com.example.asus.service.BootService")){
-           Log.e("BootReceiver","接收到广播,正在开启BootService");
+//           Log.e("BootReceiver","接收到广播,正在开启BootService");
            Intent intent1=new Intent(context, BootService.class);
            intent1.putExtra("user",(User)intent.getSerializableExtra("user"));
 //        启动Service
