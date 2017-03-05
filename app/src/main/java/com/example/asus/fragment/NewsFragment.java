@@ -2,12 +2,15 @@ package com.example.asus.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -17,15 +20,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.asus.activity.AddFriend;
+import com.example.asus.activity.ChatActivity;
 import com.example.asus.activity.MainActivity;
+import com.example.asus.adapter.FriendAdapter;
 import com.example.asus.adapter.FriendRequestAdapter;
 import com.example.asus.client.entity.Message;
-import com.example.asus.client.entity.MessageList;
 import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
@@ -33,11 +36,11 @@ import com.example.asus.util.CacheUtil;
 import com.example.asus.util.HttpUtil;
 import com.example.asus.util.LogUtil;
 import com.example.asus.util.ToastUtil;
+import com.example.asus.util.UserUtil;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +68,11 @@ public class NewsFragment extends BaseFragment{
 	private FriendRequestAdapter friendRequestAdapter;
 	private TextView noFriendTextView;
 //	好友listView的item
-	private List<Map<String,Object>> listItems=new ArrayList<>();
-	private SimpleAdapter friendAdapter;
+//	List<Map<String,Object>> listItems=new ArrayList<>();
+	private FriendAdapter friendAdapter;
+	private List<String> response;
+	private List<Message> messageList=new ArrayList<>();
+	private List<User> userList=new ArrayList<>();
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -97,24 +103,42 @@ public class NewsFragment extends BaseFragment{
 		hideEdieText=(TextView) getActivity().findViewById(R.id.hideEditText);
 		editText=(EditText)getActivity().findViewById(R.id.editText);
 		friendView=(ListView)newsLayout.findViewById(R.id.friend_listView);
-		friendAdapter=new SimpleAdapter(getActivity(),listItems,R.layout.setting_list_item,
-				new String[]{"user_photo","user_name"},new int[]{R.id.header,R.id.name});
-		//为ListView设置Adapter
-		friendView.setAdapter(friendAdapter);
+		registerForContextMenu(friendView);
 		recyclerView=(RecyclerView)newsLayout.findViewById(R.id.add_friend_request);
 		noFriendTextView=(TextView)newsLayout.findViewById(R.id.noFriends);
 		//		初始化recyclerView
-		friendRequestAdapter=new FriendRequestAdapter(getActivity(),friendAdapter,listItems);
+		friendRequestAdapter=new FriendRequestAdapter(getActivity(),this);
 		LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(friendRequestAdapter);
 //		加载好友请求
-		List<Message> messages=CacheUtil.cacheLoad(getActivity());
-		if (messages != null && messages.size()!=0){
-			LogUtil.e("加载到好友请求:  "+messages.get(0).getContent());
-			for (int i=0;i<messages.size();i++){
-				updateRecyclerView(messages.get(i));
+		response=CacheUtil.cacheLoad(getActivity(),Constant.LOAD_MESSAGE);
+		if (response!=null){
+			for (int i=0;i<response.size();i++){
+				messageList.add(Message.parse(response.get(i)));
 			}
+			if (messageList != null && messageList.size()!=0 ){
+				LogUtil.e("加载到好友请求:  "+messageList.get(0).getContent());
+				for (int i=0;i<messageList.size();i++){
+					updateRecyclerView(messageList.get(i));
+				}
+			}
+		}
+		response=CacheUtil.cacheLoad(getActivity(),Constant.LOAD_USER);
+		userList.clear();
+		if (response !=null){
+			if (noFriendTextView.getVisibility()==View.VISIBLE){
+				noFriendTextView.setVisibility(View.GONE);
+				recyclerView.setVisibility(View.VISIBLE);
+				friendView.setVisibility(View.VISIBLE);
+			}
+			for (int i=0;i<response.size();i++){
+				User user=User.parse(response.get(i));
+				userList.add(user);
+			}
+			friendAdapter=new FriendAdapter(userList,getActivity());
+				//为ListView设置Adapter
+			friendView.setAdapter(friendAdapter);
 		}
 	}
 	private void initEvent(){
@@ -171,7 +195,7 @@ public class NewsFragment extends BaseFragment{
 					hideEdieText.setVisibility(View.VISIBLE);
 //					向服务器查询该用户，若存在则显示该用户，否则，输出该用户不存在
 					String name=editText.getText().toString();
-					User user=findUser(name);
+					User user=UserUtil.findUser(name);
 					if (user!=null){
 						Intent intent=new Intent(getActivity(), AddFriend.class);
 						intent.putExtra("friend",user);
@@ -187,7 +211,11 @@ public class NewsFragment extends BaseFragment{
 		friendView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+//				直接转到聊天activity，为friendView设置上下文菜单
+				Intent intent=new Intent(getActivity(), ChatActivity.class);
+				TextView textView=(TextView)view.findViewById(R.id.name);
+				intent.putExtra("user_name",textView.getText().toString());
+				getActivity().startActivity(intent);
 			}
 		});
 	}
@@ -197,49 +225,55 @@ public class NewsFragment extends BaseFragment{
 			recyclerView.setVisibility(View.VISIBLE);
 			friendView.setVisibility(View.VISIBLE);
 		}
-//		如果不存在该用户的缓存
-		User user=CacheUtil.cacheLoad(message.getSender_id(),getActivity());
-		if (user==null){
-			user=findUser(message.getSender_id());
-			if (user!=null){
-				CacheUtil.cacheSave(user.getId(),getActivity(),user);
-				friendRequestAdapter.setUser(user);
-				friendRequestAdapter.notifyDataSetChanged();
-			}else{
-				ToastUtil.show(getActivity(),"该用户不存在",Toast.LENGTH_SHORT);
-			}
-		}else{
+//		得到用户
+		User user= UserUtil.getUser(message.getSender_id(),getActivity());
+		if (user!=null){
 			friendRequestAdapter.setUser(user);
 			friendRequestAdapter.notifyDataSetChanged();
 		}
 	}
-
-	private User findUser(String name){
-		String url=HttpUtil.BASE_URL+"findFriend.jsp?name="+name;
-		try {
-			String result=HttpUtil.getRequest(url);
-			if (result!=null){
-				JSONObject object=new JSONObject(result);
-				User user=new User();
-							/*user.id=object.getString("user_id");
-							user.screen_name=object.getString("user_name");
-							user.description=object.getString("user_self");
-							user.profile_image_url=Constant.USER_PHOTO+object.getString("user_photo");
-							user.gender=object.getString("user_sex");
-							user.telPhone=object.getString("user_tel");
-							user.birthday=object.getString("user_age");*/
-				user.setId(object.getString("user_id"));
-				user.setScreen_name(object.getString("user_name"));
-				user.setDescription(object.getString("user_self"));
-				user.setProfile_image_url(object.getString("user_photo"));
-				user.setGender(object.getString("user_sex"));
-				user.setTelPhone(object.getString("user_tel"));
-				CacheUtil.cacheSave(name,getActivity(),user);
-				return user;
-			}
-		}catch (Exception e){
-			LogUtil.e("用户异常"+e.getMessage());
+	public void updateListView(User user){
+		if (noFriendTextView.getVisibility()==View.VISIBLE){
+			noFriendTextView.setVisibility(View.GONE);
+			recyclerView.setVisibility(View.VISIBLE);
+			friendView.setVisibility(View.VISIBLE);
 		}
-		return null;
+		friendAdapter.setUser(user);
+		friendAdapter.notifyDataSetChanged();
+	}
+
+	/***
+	 * 注册上下文菜单
+	 * @param menu
+	 * @param source
+	 * @param menuInfo
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View source, ContextMenu.ContextMenuInfo menuInfo){
+		MenuInflater inflater=new MenuInflater(getActivity());
+		inflater.inflate(R.menu.alter_friend_message,menu);
+		menu.setHeaderTitle("设置");
+	}
+
+	/***
+	 * 单击菜单项时触发该方法
+	 * @param menuItem
+	 * @return
+	 */
+	@Override
+	public boolean onContextItemSelected(MenuItem menuItem){
+		LogUtil.e("正在执行onContextItemSelected方法");
+		AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+		switch (menuItem.getItemId()){
+			case R.id.alterName:
+//                修改名字
+				break;
+			case R.id.delete:
+//                删除
+				userList.remove(info.position);
+				break;
+		}
+		friendAdapter.notifyDataSetChanged();
+		return true;
 	}
 }
