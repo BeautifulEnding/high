@@ -36,9 +36,7 @@ public class Constant {
     public static final String HELP = "帮助";
     public static final String APPOINTMENT = "约";
     public static final String ONE ="we are one";
-//    该客户端用户
-    public static User SELF_USER;
-    public static Client CLIENT;
-//    添加好友格式  自己的id 对方id@AddFriend 其中 和@为分隔符，@后面的为消息类型
-
+    public static final int LOAD_MESSAGE=0;
+    public static final int LOAD_USER=1;
+    public static final int LOAD_SELF=2;
 }

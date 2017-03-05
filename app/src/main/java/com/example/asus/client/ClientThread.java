@@ -6,8 +6,13 @@ import android.util.Log;
 
 import com.example.asus.client.entity.Message;
 import com.example.asus.client.entity.MessageType;
+import com.example.asus.client.entity.User;
+import com.example.asus.util.CacheUtil;
 import com.example.asus.util.LogUtil;
+import com.example.asus.util.SDCardUtil;
+import com.example.asus.util.UserUtil;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.utils.L;
 
 import org.json.JSONObject;
 
@@ -45,7 +50,17 @@ public class ClientThread extends Thread{
                 LogUtil.e("从服务器接收到消息");
                     switch (message.getType()){
                         case MessageType.ADD_FRIEND:
-                            message.setType(MessageType.RECEIVE_FRIEND);
+                            LogUtil.e("sender_id:"+message.getSender_id());
+//                            如果当前不存在该用户的验证信息
+                            if (! SDCardUtil.findMessage(message.getSender_id())){
+                                message.setType(MessageType.RECEIVE_FRIEND);
+                                Intent intent=new Intent("add.friend.message");
+                                intent.putExtra("message",message);
+                                context.sendBroadcast(intent);
+                            }
+                            break;
+                        case MessageType.AGREE_FRIEND:
+                            message.setType(MessageType.ACCEPT_FRIEND);
                             Intent intent=new Intent("add.friend.message");
                             intent.putExtra("message",message);
                             context.sendBroadcast(intent);

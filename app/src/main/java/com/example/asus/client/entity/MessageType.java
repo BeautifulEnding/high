@@ -15,4 +15,7 @@ public class MessageType {
     public static final int USER_MESSAGE=8;//发送用户消息
     public static final int RECEIVE_FRIEND=9;
     public static final int NOTIFICATION=10;
+    public static final int AGREE_FRIEND=11;
+    public static final int ACCEPT_FRIEND=12;
+    public static final int ACCEPT_NOTIFICATION=13;
 }

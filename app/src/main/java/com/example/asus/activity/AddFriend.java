@@ -73,8 +73,7 @@ public class AddFriend extends Activity {
         });
 
         messageTextView.setText("好友资料");
-//        Glide.with(this).load(user.getProfile_image_url()).placeholder(R.color.gray).dontAnimate().dontTransform().into(portraits);
-        portraits.setBackground(Drawable.createFromPath(Constant.USER_PHOTO+user.getProfile_image_url()));
+        Glide.with(this).load(user.getProfile_image_url()).placeholder(R.drawable.example_profileimg).dontAnimate().dontTransform().into(portraits);
         netWorkName.setText(user.getScreen_name());
         id.setText(user.getId());
         settingTag.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +97,8 @@ public class AddFriend extends Activity {
                 intent.putExtra("message",message);
                 sendBroadcast(intent);
                 ToastUtil.show(AddFriend.this,"已向好友发送请求，等待好友验证", Toast.LENGTH_SHORT);
-                finish();
+//                MyApplication.getInstance().removeActivity(AddFriend.this);
+//                finish();
             }
         });
     }

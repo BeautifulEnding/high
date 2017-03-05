@@ -1,6 +1,7 @@
 package com.example.asus.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +11,13 @@ import android.widget.SimpleAdapter;
 import android.widget.*;
 
 import com.bumptech.glide.Glide;
+import com.example.asus.client.entity.Message;
+import com.example.asus.client.entity.MessageType;
 import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
+import com.example.asus.fragment.NewsFragment;
 import com.example.asus.he.R;
+import com.example.asus.util.CacheUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,14 +34,8 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<RecyclerView.View
     private View mView;
     private FriendRequestAdapter adapter;
     private SimpleAdapter friendAdapter;
+    private NewsFragment fragment;
     private List<Map<String,Object>> listItems=new ArrayList<>();
-    public FriendRequestAdapter(User user, Context context,SimpleAdapter friendAdapter,List<Map<String,Object>> listItems){
-        users.add(user);
-        mContext=context;
-        adapter=this;
-        this.friendAdapter=friendAdapter;
-        this.listItems=listItems;
-    }
     public FriendRequestAdapter(Context context,SimpleAdapter friendAdapter,List<Map<String,Object>> listItems){
         mContext=context;
         adapter=this;
@@ -49,6 +48,10 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<RecyclerView.View
         adapter=this;
         this.friendAdapter=friendAdapter;
         this.listItems=listItems;
+    }
+    public FriendRequestAdapter(Context context,NewsFragment fragment){
+        mContext=context;
+        this.fragment=fragment;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -63,25 +66,34 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<RecyclerView.View
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        Glide.with(mContext).load(Constant.USER_PHOTO+users.get(position).getId()).placeholder(R.color.gray).dontAnimate().dontTransform().into(((FriendViewHolder)holder).user_photo);
+        Glide.with(mContext).load(Constant.USER_PHOTO+users.get(position).getId()).placeholder(R.drawable.example_profileimg).dontAnimate().dontTransform().into(((FriendViewHolder)holder).user_photo);
         ((FriendViewHolder)holder).user_id.setText(users.get(position).getId());
         ((FriendViewHolder)holder).addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fragment.updateListView(users.get(position));
+                CacheUtil.cacheDelete(users.get(position).getId());
                 adapter.remove(users.get(position));
                 adapter.notifyDataSetChanged();
-                Map<String,Object> listView=new HashMap<String, Object>();
-                listView.put("user_photo", Drawable.createFromPath(Constant.USER_PHOTO+users.get(position).getId()));
-                listView.put("user_name",users.get(position).getScreen_name());
-                listItems.add(listView);
-                friendAdapter.notifyDataSetChanged();
-
+//                发送消息到服务器通知对方已同意加为好友
+                Message message=new Message();
+                message.setContent("agreeFriend");
+                User selfUser=CacheUtil.cacheLoad("selfMessage",mContext);
+                message.setSender_id(selfUser.getId());
+                message.setReceiver_id(users.get(position).getId());
+                message.setType(MessageType.AGREE_FRIEND);
+                message.setSendTime(System.currentTimeMillis());
+                Intent intent=new Intent();
+                intent.setAction("add.friend.message");
+                intent.putExtra("message",message);
+                mContext.sendBroadcast(intent);
             }
         });
 
         ((FriendViewHolder)holder).refuseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CacheUtil.cacheDelete(users.get(position).getId());
                 adapter.remove(users.get(position));
                 adapter.notifyDataSetChanged();
             }

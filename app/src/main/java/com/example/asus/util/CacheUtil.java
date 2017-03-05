@@ -5,6 +5,8 @@ import android.content.Context;
 import com.example.asus.client.entity.Message;
 import com.example.asus.client.entity.MessageList;
 import com.example.asus.client.entity.User;
+import com.example.asus.constant.*;
+import com.example.asus.constant.Constant;
 import com.example.asus.entity.Content;
 import com.example.asus.entity.ContentList;
 import com.example.asus.view.HomeFragmentView;
@@ -47,7 +49,8 @@ public class CacheUtil {
         String response = new Gson().toJson(messageList);
         SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/requestFriend", fileName+ ".txt", response);
     }
-    public static void cacheDelete(){
+    public static void cacheDelete(String user_id){
+        SDCardUtil.deleteMessage(user_id,SDCardUtil.getSDCardPath() + "/high/requestFriend");
 //        删除请求添加好友信息
     }
     public static boolean cacheLoad(String topic, Context context, ArrayList<Content> contents, HomeFragmentView homeFragmentView) {
@@ -92,16 +95,16 @@ public class CacheUtil {
         return null;
     }
 
-    public static List<Message> cacheLoad(Context context) {
+    public static List<String> cacheLoad(Context context,int type) {
         LogUtil.e("正在加载缓存");
         List<String> response;
-        List<Message> messages=new ArrayList<>();
-        response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/requestFriend");
-        if (response!=null && response.size()!=0){
-            for (int i=0;i<response.size();i++){
-                messages.add(Message.parse(response.get(i)));
-            }
-            return messages;
+        switch (type){
+            case Constant.LOAD_MESSAGE :
+                response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/requestFriend");
+                return response;
+            case Constant.LOAD_USER :
+                response=SDCardUtil.get(context,SDCardUtil.getSDCardPath() + "/high/friends");
+                return response;
         }
         return null;
     }

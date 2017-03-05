@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 
+import com.example.asus.ui.FillContent;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -153,6 +155,20 @@ public class SDCardUtil {
         return null;
     }
 
+    public static void deleteMessage(String fileName,String filePath){
+        File file=new File(filePath,fileName+".txt");
+        file.delete();
+    }
+    public static boolean findMessage(String user_id){
+        String[] files=getAllFile(SDCardUtil.getSDCardPath() + "/high/requestFriend");
+        for (int i=0;i<files.length;i++){
+            LogUtil.e("fileName:   "+files[i]);
+            if (files[i].equals(user_id+".txt")){
+                return true;
+            }
+        }
+        return false;
+    }
     public static String[] getAllFile(String filePath){
         File defaultFile=new File(filePath);
         if (defaultFile.exists()){

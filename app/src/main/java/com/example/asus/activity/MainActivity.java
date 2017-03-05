@@ -39,6 +39,7 @@ import com.example.asus.util.CacheUtil;
 import com.example.asus.util.LogUtil;
 import com.example.asus.util.NotificationUtil;
 import com.example.asus.util.TagUtil;
+import com.example.asus.util.UserUtil;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -154,14 +155,11 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
         @Override
         public void onReceive(Context context, Intent intent) {
             Message message=(Message) intent.getSerializableExtra("message");
-            if (message.getType()== MessageType.ADD_FRIEND){
-                client.setMessage(new Gson().toJson(message));
-            }else{
-                CacheUtil.cacheSave(message.getSender_id(),MainActivity.this,message);
-                if (message.getType()==MessageType.RECEIVE_FRIEND){
-//                      当接收到别人请求添加我为好友时，更新好友界面，
-// 如果当前页面时好友页面，则直接更新，否则发通知，当用户切换到好友页面时，再更新好友页面
-//                    LogUtil.e("接收到好友请求");
+            switch (message.getType()){
+                case MessageType.ADD_FRIEND:
+                    client.setMessage(new Gson().toJson(message));
+                    break;
+                case MessageType.RECEIVE_FRIEND:
                     if (currFragTag==Constant.FRAGMENT_FLAG_SEARCH){
 //                        LogUtil.e("更新newFragment");
                         newsFragment.updateRecyclerView(message);
@@ -169,12 +167,28 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
                         NotificationUtil.showHangNotification(message,MainActivity.this);
 //                        LogUtil.e("发送通知");
                     }
-                }else{
-//                    转换fragment
-//                    LogUtil.e("通知被点击");
+                    break;
+                case MessageType.NOTIFICATION :
                     changeFragment(Constant.BTN_FLAG_SEARCH);
-//                    newsFragment.updateRecyclerView((Message) intent.getSerializableExtra("message"));
-                }
+                    break;
+                case MessageType.AGREE_FRIEND:
+//                    同意添加对方为好友
+                    client.setMessage(new Gson().toJson(message));
+                    break;
+                case MessageType.ACCEPT_FRIEND:
+//                    对方同意添加我为好友
+                    if (currFragTag==Constant.FRAGMENT_FLAG_SEARCH){
+//                        LogUtil.e("更新newFragment");
+                        User user= UserUtil.getUser(message.getSender_id(),context);
+                        newsFragment.updateListView(user);
+                    }else{
+                        NotificationUtil.showHangNotification(message,MainActivity.this);
+//                        LogUtil.e("发送通知");
+                    }
+                    break;
+                case MessageType.ACCEPT_NOTIFICATION:
+                    changeFragment(Constant.BTN_FLAG_SEARCH);
+
             }
         }
     }

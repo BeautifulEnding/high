@@ -61,6 +61,7 @@ public class AddTopicActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_topic);
+        MyApplication.getInstance().addActivity(this);
         topics=getIntent().getStringArrayExtra("topics");
         for (int i=1;i<topics.length-1;i++){
             topicsList.add(topics[i]);
@@ -68,7 +69,6 @@ public class AddTopicActivity extends Activity {
         initView();
         initRecyclerView();
         initEvent();
-
     }
     private void initView(){
 //        updateTopicLayout=(LinearLayout)findViewById(R.id.update_topic);
@@ -96,6 +96,7 @@ public class AddTopicActivity extends Activity {
             @Override
             public void onClick(View v) {
                 AddTopicActivity.this.setResult(0);
+                MyApplication.getInstance().removeActivity(AddTopicActivity.this);
                 finish();
             }
         });
@@ -124,6 +125,7 @@ public class AddTopicActivity extends Activity {
                 Intent intent=new Intent();
                 intent.putExtra("topics",topics);
                 AddTopicActivity.this.setResult(1,intent);
+                MyApplication.getInstance().removeActivity(AddTopicActivity.this);
                 finish();
             }
         });
