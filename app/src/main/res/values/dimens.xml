@@ -65,5 +65,6 @@
     <dimen name="sp_16">16sp</dimen>
     <!--发微博的内容字体大小-->
     <dimen name="post_content_font">15sp</dimen><!--发微博的内容字体大小：15中号，14小号-->
+    <dimen name="base_scrollview_top_height">50.0dip</dimen>
 
 </resources>

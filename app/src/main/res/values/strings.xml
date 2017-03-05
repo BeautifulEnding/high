@@ -62,5 +62,8 @@
     <string name="find_all_topic">查看所有已存在话题</string>
     <string name="setting_tag">设置备注</string>
     <string name="add_friend">添加好友</string>
+    <string name="location">位置</string>
+    <string name="longclick_speak">长按说话</string>
+    <string name="voice_up_tips">手指上滑,取消发送</string>
 
 </resources>

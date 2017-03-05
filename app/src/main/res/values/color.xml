@@ -103,5 +103,6 @@
     <color name="bottom_color">#FFC1C1</color>
     <color name="green">#B3EE3A</color>
     <color name="purple">#8B668B</color>
+    <color name="msg_chat_bg">#eceff4</color>
 
 </resources>

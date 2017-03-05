@@ -2,21 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/button_size">
-    <include layout="@layout/friends_layout"/>
+    android:layout_height="40dp">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        >
+        <ImageView
+            android:layout_width="@dimen/small_photo_size"
+            android:layout_height="@dimen/small_photo_size"
+            android:id="@+id/user_photo"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/user_id"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"/>
+    </LinearLayout>
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:layout_gravity="center"
         android:id="@+id/add"
         android:background="@drawable/sure_button_bg"
+        android:text="添加"
+        android:gravity="center"
         />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:id="@+id/refuse"
-        android:background="@drawable/sure_button_bg"
+        android:background="@drawable/spinner_bg"
         android:layout_gravity="center"
+        android:text="忽略"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         />
 
 </LinearLayout>
