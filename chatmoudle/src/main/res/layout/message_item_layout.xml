@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/button_size"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/white"
+    android:minHeight="@dimen/button_size"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    >
+    <!--定义一个ImageView，用于作为列表项的一部分-->
+    <ImageView
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
+        android:id="@+id/new_icon"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:background="@drawable/example_profileimg"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:layout_marginRight="5dip"
+            android:orientation="vertical"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:layout_marginLeft="5dip"
+                >
+
+                <TextView
+                    android:id="@+id/new_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="26dp"
+                    android:text="2012-05-14 12:10" />
+
+                <TextView
+                    android:id="@+id/new_title"
+                    android:layout_marginLeft="5dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="123"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/new_content"
+                android:layout_marginStart="10dip"
+                android:layout_marginRight="5dip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/paopao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="10.0dip" />
+    </FrameLayout>
+</LinearLayout>

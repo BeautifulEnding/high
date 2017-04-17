@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Smile_TextView_White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="Smile_TextView_Gray">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+    <style name="ActionBar">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/title_btn_back</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">@dimen/base_action_bar_height</item>
+    </style>
+
+    <style name="ActionBarTitle">
+        <item name="android:textSize">@dimen/base_action_bar_title_size</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:drawablePadding">1.0dip</item>
+    </style>
+    <!-- 时间线上，单条微博的右上角的箭头，点击后弹出pop的动画 -->
+    <style name="weiboitem_arrow_popwup_style">
+        <item name="android:windowEnterAnimation">@anim/home_weiboitem_arrow_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/home_weiboitem_arrow_popup_exit</item>
+    </style>
+</resources>

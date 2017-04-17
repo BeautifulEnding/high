@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/button_size"
+    android:orientation="horizontal"
+    android:background="@color/bottom_color"
+    android:id="@+id/one"
+    android:gravity="center_vertical"
+    >
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/small_text_size"
+        android:layout_weight="1"
+        android:id="@+id/reverse"
+        android:background="@drawable/goback"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:textSize="@dimen/text_size"
+        android:textColor="@android:color/black"
+        android:text="个人信息"
+        android:layout_centerVertical="true"
+        android:gravity="left"
+        android:layout_marginStart="@dimen/photo_size"
+        android:id="@+id/messageTextView"
+        />
+</LinearLayout>
