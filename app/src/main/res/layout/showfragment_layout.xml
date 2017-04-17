@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/topbar_bottom_drive"
      >
-    <!--<com.example.asus.util.RefreshableView-->
+    <!--<RefreshableView-->
         <!--android:id="@+id/refreshable_view"-->
         <!--android:layout_width="fill_parent"-->
         <!--android:layout_height="fill_parent" >-->
@@ -15,7 +15,7 @@
             <!--android:clipToPadding="false"-->
             <!--android:paddingTop="45dp"-->
             <!--android:scrollbars="vertical" />-->
-    <!--</com.example.asus.util.RefreshableView>-->
+    <!--</RefreshableView>-->
     <!--android:background="#eee"-->
     <!--<com.mrw.wzmrecyclerview.AutoLoad.AutoLoadRecyclerView-->
         <!--android:layout_width="match_parent"-->

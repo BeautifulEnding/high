@@ -3,9 +3,7 @@ package com.example.asus.util;
 import android.content.Context;
 
 import com.example.asus.client.entity.Message;
-import com.example.asus.client.entity.MessageList;
 import com.example.asus.client.entity.User;
-import com.example.asus.constant.*;
 import com.example.asus.constant.Constant;
 import com.example.asus.entity.Content;
 import com.example.asus.entity.ContentList;
@@ -32,40 +30,36 @@ public class CacheUtil {
 //            we are one
             SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", topic + ".txt", response);
         }*/
-        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", friend + ".txt", response);
+//        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", friend + ".txt", response);
+        SDCardUtil.put(context, Constant.SD_PATH+"topic", friend + ".txt", response);
     }
 
     public static void cacheSave(String fileName, Context context, User user) {
         if (fileName.equals("selfMessage")){
             String response = new Gson().toJson(user);
-            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/selfMessage", fileName+ ".txt", response);
+//            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/selfMessage", fileName+ ".txt", response);
+            SDCardUtil.put(context, Constant.SD_PATH+"selfMessage", fileName+ ".txt", response);
         }else{
             String response = new Gson().toJson(user);
-            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/friends", fileName + ".txt", response);
+//            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/friends", fileName + ".txt", response);
+            SDCardUtil.put(context, Constant.SD_PATH+"friends", fileName+ ".txt", response);
         }
 
     }
     public static void cacheSave(String fileName, Context context, Message messageList){
         String response = new Gson().toJson(messageList);
-        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/requestFriend", fileName+ ".txt", response);
+//        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/requestFriend", fileName+ ".txt", response);
+        SDCardUtil.put(context, Constant.SD_PATH+"requestFriend", fileName+ ".txt", response);
     }
     public static void cacheDelete(String user_id){
-        SDCardUtil.deleteMessage(user_id,SDCardUtil.getSDCardPath() + "/high/requestFriend");
+//        SDCardUtil.deleteMessage(user_id,SDCardUtil.getSDCardPath() + "/high/requestFriend");
+        SDCardUtil.deleteMessage(user_id,Constant.SD_PATH+"requestFriend");
 //        删除请求添加好友信息
     }
     public static boolean cacheLoad(String topic, Context context, ArrayList<Content> contents, HomeFragmentView homeFragmentView) {
         LogUtil.e("正在加载缓存");
         String response = null;
-        /*if (topic == Constant.HELP) {
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/topic", "帮助" + ".txt");
-        } else if (topic == Constant.APPOINTMENT) {
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/topic", "约" + ".txt");
-        } else if (topic==Constant.ONE){
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/topic", topic + ".txt");
-        }else {
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/topic", "帮助" + ".txt");
-        }*/
-        response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/topic", topic + ".txt");
+         response = SDCardUtil.get(context, Constant.SD_PATH+"topic", topic + ".txt");
         if (response != null) {
             contents= (ArrayList<Content>) ContentList.parse(response).getContents();
             homeFragmentView.hideLoadingIcon();
@@ -84,9 +78,11 @@ public class CacheUtil {
         LogUtil.e("正在加载缓存");
         String response = null;
         if (fileName.equals("selfMessage")){
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/selfMessage", "selfMessage.txt");
+//            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/selfMessage", "selfMessage.txt");
+            response = SDCardUtil.get(context, Constant.SD_PATH+"selfMessage", "selfMessage.txt");
         }else{
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/friends", fileName + ".txt");
+//            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/friends", fileName + ".txt");
+            response = SDCardUtil.get(context, Constant.SD_PATH+"friends", fileName + ".txt");
         }
         if (response != null) {
             User user=User.parse(response);
@@ -100,10 +96,12 @@ public class CacheUtil {
         List<String> response;
         switch (type){
             case Constant.LOAD_MESSAGE :
-                response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/requestFriend");
+//                response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() + "/high/requestFriend");
+                response = SDCardUtil.get(context, Constant.SD_PATH+"requestFriend");
                 return response;
             case Constant.LOAD_USER :
-                response=SDCardUtil.get(context,SDCardUtil.getSDCardPath() + "/high/friends");
+//                response=SDCardUtil.get(context,SDCardUtil.getSDCardPath() + "/high/friends");
+                response = SDCardUtil.get(context, Constant.SD_PATH+"friends");
                 return response;
         }
         return null;

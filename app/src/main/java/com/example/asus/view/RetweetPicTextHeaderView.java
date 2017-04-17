@@ -1,11 +1,9 @@
 package com.example.asus.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,7 +14,6 @@ import com.example.asus.he.R;
 import com.example.asus.ui.FillContent;
 import com.example.asus.util.LogUtil;
 import com.example.asus.widget.EmojiTextView;
-import com.example.asus.widget.LoadingFooter;
 
 /**
  * Created by wenmingvs on 16/4/26.

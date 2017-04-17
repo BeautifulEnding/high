@@ -2,7 +2,6 @@ package com.example.asus.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,9 @@ import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
 import com.example.asus.fragment.NewsFragment;
 import com.example.asus.he.R;
-import com.example.asus.util.CacheUtil;
+import com.example.asus.util.CacUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,13 +70,13 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<RecyclerView.View
             @Override
             public void onClick(View v) {
                 fragment.updateListView(users.get(position));
-                CacheUtil.cacheDelete(users.get(position).getId());
+                CacUtil.cacheDelete(users.get(position).getId());
                 adapter.remove(users.get(position));
                 adapter.notifyDataSetChanged();
 //                发送消息到服务器通知对方已同意加为好友
                 Message message=new Message();
                 message.setContent("agreeFriend");
-                User selfUser=CacheUtil.cacheLoad("selfMessage",mContext);
+                User selfUser= CacUtil.cacheLoad("selfMessage",mContext);
                 message.setSender_id(selfUser.getId());
                 message.setReceiver_id(users.get(position).getId());
                 message.setType(MessageType.AGREE_FRIEND);
@@ -93,7 +91,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<RecyclerView.View
         ((FriendViewHolder)holder).refuseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CacheUtil.cacheDelete(users.get(position).getId());
+                CacUtil.cacheDelete(users.get(position).getId());
                 adapter.remove(users.get(position));
                 adapter.notifyDataSetChanged();
             }

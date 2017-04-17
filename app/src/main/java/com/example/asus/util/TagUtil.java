@@ -1,7 +1,6 @@
 package com.example.asus.util;
 
 import com.example.asus.activity.MainActivity;
-import com.example.asus.constant.*;
 
 /**
  * Created by Administrator on 2016/10/14 0014.

@@ -4,18 +4,18 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
+        android:layout_height="@dimen/button_size"
         android:orientation="horizontal"
-        android:background="@android:color/black"
+        android:background="@color/bottom_color"
         android:id="@+id/one"
         android:gravity="center_vertical"
         >
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="22dp"
+            android:layout_height="@dimen/small_text_size"
             android:layout_weight="1"
             android:id="@+id/reverse"
-            android:background="@drawable/left"
+            android:background="@drawable/goback"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             />
         <TextView
@@ -23,12 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:textSize="@dimen/text_size"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:text="设置"
-            android:layout_toRightOf="@id/reverse"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:gravity="center"
+            android:layout_marginStart="@dimen/photo_size"
+            android:gravity="left"
             />
     </LinearLayout>
     <ListView

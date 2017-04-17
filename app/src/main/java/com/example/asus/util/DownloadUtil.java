@@ -67,12 +67,15 @@ public class DownloadUtil {
                             connection.setRequestMethod("GET");
 //		http://localhost:8080/notepad/notepad/index.jsp?filename=123
 //		建立实际连接
+                            connection.setConnectTimeout(5000);
+                            connection.setReadTimeout(10000);
                             connection.connect();
 //		        得到服务器的回复（响应）
                             BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream()));
                             String lString="";
                             List<JSONObject> result=new ArrayList<>();
                             while ((lString=reader.readLine())!=null) {
+                                LogUtil.e("超時時服務器返回的值:"+lString);
                                 JSONObject object=new JSONObject(lString);
                                 result.add(object);
                             }

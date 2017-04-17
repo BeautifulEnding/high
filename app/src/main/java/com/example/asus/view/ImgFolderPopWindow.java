@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 
 import com.example.asus.adapter.ImgFolderAdapter;
 import com.example.asus.he.R;
-import com.example.asus.ui.ScreenUtil;
+import com.example.asus.util.ScreenUtil;
 import com.example.asus.util.LogUtil;
 
 import java.util.ArrayList;

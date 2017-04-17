@@ -14,9 +14,9 @@
         android:background="@color/divider_color" />
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
+        android:layout_height="@dimen/button_size"
         android:id="@+id/head_layout"
-        android:background="@color/purple"
+        android:background="@color/bottom_color"
         android:gravity="center_vertical"
         >
     </FrameLayout>

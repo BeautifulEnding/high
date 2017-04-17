@@ -6,37 +6,38 @@
     android:id="@+id/change_name">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@android:color/black"
+        android:layout_height="@dimen/button_size"
+        android:background="@color/bottom_color"
         android:id="@+id/one"
         android:orientation="horizontal"
         android:gravity="center"
         >
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="22dp"
+            android:layout_height="@dimen/small_text_size"
             android:layout_weight="1"
             android:id="@+id/name_reverse"
-            android:background="@drawable/left"
+            android:background="@drawable/goback"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="8"
             android:textSize="@dimen/text_size"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:text="更改用户名"
             android:id="@+id/head_message"
             android:layout_centerInParent="true"
             android:gravity="center"
             />
         <Button
-            android:layout_width="@dimen/button_size"
+            android:layout_width="0dp"
             android:layout_height="@dimen/small_button_size"
+            android:layout_weight="3"
             android:id="@+id/save"
             android:background="@drawable/button_unenable"
             android:text="@string/save"
-            android:textColor="@color/bg_color"
+            android:textColor="@color/black"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_centerVertical="true"

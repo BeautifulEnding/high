@@ -10,21 +10,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.asus.client.Client;
-import com.example.asus.client.ManageClientThread;
 import com.example.asus.client.entity.Message;
 import com.example.asus.client.entity.MessageType;
 import com.example.asus.client.entity.User;
@@ -34,15 +34,18 @@ import com.example.asus.fragment.NewsFragment;
 import com.example.asus.fragment.ShowFragment;
 import com.example.asus.he.R;
 import com.example.asus.ui.BottomControlPanel;
-import com.example.asus.util.AndroidUtil;
-import com.example.asus.util.CacheUtil;
+import com.example.asus.util.ScreenUtil;
+import com.example.asus.ui.groupwindow.GroupPopWindow;
+import com.example.asus.ui.groupwindow.IGroupItemClick;
+import com.example.asus.util.CacUtil;
+import com.example.asus.util.DensityUtil;
 import com.example.asus.util.LogUtil;
 import com.example.asus.util.NotificationUtil;
 import com.example.asus.util.TagUtil;
 import com.example.asus.util.UserUtil;
 import com.google.gson.Gson;
-
-import java.io.Serializable;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class MainActivity extends BaseActivity implements BottomControlPanel.BottomPanelCallback{
     //定义SengFragment的顶部图片
@@ -60,9 +63,12 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
     //定义字符串标识的上一个Fragment
     public static String preFragTag="";
     private final int UPDATE_TOPIC=2;
-    private Spinner spinner;
+//    private Spinner spinner;
+    private LinearLayout mGroup;
+    private GroupPopWindow mPopWindow;
+    public TextView mUserNameTextView;
 //    spinner的适配器
-    ArrayAdapter<String> adapter=null;
+//    ArrayAdapter<String> adapter=null;
 //    保存话题
     SharedPreferences topSp;
     SharedPreferences.Editor editor;
@@ -84,9 +90,10 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        User user= CacheUtil.cacheLoad("selfMessage",this);
+        User user= CacUtil.cacheLoad("selfMessage",this);
         if (user!=null){
             client=new Client(user,this);
             client.start();
@@ -113,38 +120,17 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
         /*TextView spinner=(TextView)head.findViewById(R.id.spinner);
         PopupMenu spinnerMenu= new PopupMenu(this,spinner);
         topics=getResources().getStringArray(R.array.topic);*/
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,topics);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner=(Spinner)head.findViewById(R.id.spinner);
-        spinner.setAdapter(adapter);
+//        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,topics);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         head_panel.addView(head);
         //初始化页面
 		initUI();
 		fragmentManager = getFragmentManager();
         //设置默认显示的界面为show页面
 		setDefaultFirstFragment(Constant.FRAGMENT_FLAG_SHOW);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==topics.length-1){
-                    Intent intent=new Intent(MainActivity.this,AddTopicActivity.class);
-                    intent.putExtra("topics",topics);
-                    startActivityForResult(intent,UPDATE_TOPIC);
-                }else {
-//                    更新showFragment中recyclerView的数据，
-                   /*if (handler!=null){
-                       handler.sendEmptyMessage(UPDATE);
-
-                   }*/
-                    showFragment.updateRecyclerView();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        mGroup=(LinearLayout)findViewById(R.id.group);
+        mUserNameTextView = (TextView)findViewById(R.id.name);
+        initGroupWindows();
 //为接收到好友添加请求注册监听
         IntentFilter myIntentFilter = new IntentFilter();
         myIntentFilter.addAction("add.friend.message");
@@ -157,9 +143,11 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
             Message message=(Message) intent.getSerializableExtra("message");
             switch (message.getType()){
                 case MessageType.ADD_FRIEND:
+//                    添加对方好友
                     client.setMessage(new Gson().toJson(message));
                     break;
                 case MessageType.RECEIVE_FRIEND:
+//                    接收到来自别人的好友请求，如果没有及时处理应该在下一次显示该消息
                     if (currFragTag==Constant.FRAGMENT_FLAG_SEARCH){
 //                        LogUtil.e("更新newFragment");
                         newsFragment.updateRecyclerView(message);
@@ -167,19 +155,23 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
                         NotificationUtil.showHangNotification(message,MainActivity.this);
 //                        LogUtil.e("发送通知");
                     }
+
                     break;
                 case MessageType.NOTIFICATION :
+//                    将当前的Fragment更换成好友Fragment
                     changeFragment(Constant.BTN_FLAG_SEARCH);
                     break;
                 case MessageType.AGREE_FRIEND:
 //                    同意添加对方为好友
                     client.setMessage(new Gson().toJson(message));
+                    User user= UserUtil.getUser(message.getReceiver_id(),context);
+                    newsFragment.updateListView(user);
                     break;
                 case MessageType.ACCEPT_FRIEND:
 //                    对方同意添加我为好友
                     if (currFragTag==Constant.FRAGMENT_FLAG_SEARCH){
 //                        LogUtil.e("更新newFragment");
-                        User user= UserUtil.getUser(message.getSender_id(),context);
+                        user= UserUtil.getUser(message.getSender_id(),context);
                         newsFragment.updateListView(user);
                     }else{
                         NotificationUtil.showHangNotification(message,MainActivity.this);
@@ -188,6 +180,16 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
                     break;
                 case MessageType.ACCEPT_NOTIFICATION:
                     changeFragment(Constant.BTN_FLAG_SEARCH);
+                    break;
+                case MessageType.COM_MES:case MessageType.PICTURE_MESSAGE:case MessageType.VOICE_MESSAGE:
+                    NotificationUtil.showHangNotification(message,MainActivity.this);
+                    break;
+                case MessageType.UPDATE_MESSAGE:
+                    Intent intent2=new Intent(MainActivity.this, ChatActivity.class);
+                    User user2=CacUtil.cacheLoad(message.getSender_id(),MainActivity.this);
+                    intent.putExtra("friends",user2);
+                    startActivity(intent);
+                    break;
 
             }
         }
@@ -209,7 +211,38 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
 		}
 
 	}
-	@Override
+    private void initGroupWindows() {
+        mGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Rect rect = new Rect();
+                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                int statusBarHeight = rect.top;
+                mPopWindow = GroupPopWindow.getInstance(MainActivity.this, ScreenUtil.getScreenWidth(MainActivity.this) * 3 / 5, ScreenUtil.getScreenHeight(MainActivity.this) * 2 / 3);
+                mPopWindow.showAtLocation(mUserNameTextView, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, mUserNameTextView.getHeight() + statusBarHeight + DensityUtil.dp2px(MainActivity.this, 8));
+                mPopWindow.setOnGroupItemClickListener(new IGroupItemClick() {
+                    @Override
+                    public void onGroupItemClick(int position, long groupId, String groupName) {
+//                        mCurrentGroup = groupId;
+//                        if (groupId != Constants.GROUP_TYPE_ALL) {
+//                            setGroupName(groupName);
+//                        } else {
+//                            setGroupName(mUserName);
+//                        }
+                        mUserNameTextView.setText(groupName);
+                        mPopWindow.dismiss();
+//                        mHomePresent.pullToRefreshData(groupId, mContext);
+                        showFragment.updateRecyclerView();
+                    }
+                });
+                if (mPopWindow.isShowing()) {
+                    mPopWindow.scrollToSelectIndex();
+                }
+            }
+        });
+    }
+
+    @Override
 	public void onBottomPanelClick(final int itemId) {
         //bottomPanel接口必须实现的方法
         //当点击底部按钮时
@@ -222,28 +255,10 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
             //更改顶部布局填充文件
             head_panel.removeAllViews();
             head = View.inflate(MainActivity.this, R.layout.show_head_layout, null);
-            spinner=(Spinner)head.findViewById(R.id.spinner);
-            spinner.setAdapter(adapter);
             head_panel.addView(head);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position==topics.length-1){
-                        Intent intent=new Intent(MainActivity.this,AddTopicActivity.class);
-                        intent.putExtra("topics",topics);
-                        startActivityForResult(intent,UPDATE_TOPIC);
-                    }else {
-//                    更新showFragment中recyclerView的数据，
-//                        handler.sendEmptyMessage(UPDATE);
-                        showFragment.updateRecyclerView();
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
+            mGroup=(LinearLayout)findViewById(R.id.group);
+            mUserNameTextView = (TextView)findViewById(R.id.name);
+            initGroupWindows();
         } else if ((itemId & Constant.BTN_FLAG_MESSAGE) != 0) {
             tag = Constant.FRAGMENT_FLAG_MESSAGE;
             if (currFragTag.equals(Constant.FRAGMENT_FLAG_SHOW)){
@@ -425,8 +440,8 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
                     for (int i=0;i<topics.length;i++){
                         LogUtil.e("topicValue"+topics[i]);
                     }
-                    adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,topics);
-                    spinner.setAdapter(adapter);
+//                    adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,topics);
+//                    spinner.setAdapter(adapter);
 //                更新topic资源
                     for (int i=0;i<topics.length;i++){
                         editor.putString("topic"+i,topics[i]);
@@ -434,7 +449,7 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
                     editor.putInt("topicSize",topics.length);
                     editor.commit();
                 }else {
-                    spinner.setSelection(0,true);
+//                    spinner.setSelection(0,true);
                 }
                 break;
         }
@@ -442,5 +457,14 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
    /* public void setHandler(Handler mHandler){
         mHandler=this.handler;
     }*/
+    @Override
+    public void  onDestroy(){
+        super.onDestroy();
+        Message message=new Message();
+        message.setType(MessageType.EXIT);
+        client.setMessage(new Gson().toJson(message));
+        client.stop();
+        LogUtil.e("mainActivity被销毁");
+    }
 
 }

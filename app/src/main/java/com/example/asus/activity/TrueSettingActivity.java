@@ -1,6 +1,7 @@
 package com.example.asus.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -75,6 +76,8 @@ public class TrueSettingActivity extends Activity{
                             editor.commit();
                         }
                         MyApplication.getInstance().exit();
+                        Intent intent=new Intent(TrueSettingActivity.this,LoginActivity.class);
+                        startActivity(intent);
                         return true;
                     }
                 });

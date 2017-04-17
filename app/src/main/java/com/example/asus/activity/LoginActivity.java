@@ -1,5 +1,6 @@
 package com.example.asus.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,11 +14,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
+import com.example.asus.util.CacUtil;
 import com.example.asus.util.CacheUtil;
 import com.example.asus.util.DialogUtil;
 import com.example.asus.util.HttpUtil;
@@ -33,7 +36,7 @@ import java.util.Map;
  * Created by Administrator on 2016/9/7 0007.
  */
 //这里没有对与http的通信采取异步方式，
-public class LoginActivity extends BaseActivity{
+public class LoginActivity extends Activity{
     //定义JSONObject
     JSONObject jsonObj=null;
     //定义布局文件中的EditText和Button
@@ -49,6 +52,8 @@ public class LoginActivity extends BaseActivity{
     View divider1=null;
     View divider2=null;
     private boolean exception=false;
+//    登录进度条
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +104,7 @@ public class LoginActivity extends BaseActivity{
                 }
             }
         });
+        progressBar=(ProgressBar)findViewById(R.id.progress_bar);
         login = (Button) findViewById(R.id.login);
         divider1 = (View) findViewById(R.id.divider1);
         divider2 = (View) findViewById(R.id.divider2);
@@ -110,25 +116,15 @@ public class LoginActivity extends BaseActivity{
                 }
                 else{
                     if (validate()){
+                        login.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.VISIBLE);
                         // 如果登录成功
                         if (loginPro())  // ②
                         {
                             try {
-                                /*Constant.SELF_USER=new User();
-                                Constant.SELF_USER.id=jsonObj.getString("user_id");
-                                Constant.SELF_USER.birthday=jsonObj.getString("user_birthday");
-                                Constant.SELF_USER.profile_image_url=jsonObj.getString("user_photo");
-                                Constant.SELF_USER.description=jsonObj.getString("user_self");
-                                Constant.SELF_USER.telPhone=jsonObj.getString("user_tel");
-                                Constant.SELF_USER.gender=jsonObj.getString("user_sex");
-                                Constant.SELF_USER.screen_name=jsonObj.getString("user_name");
-                                CacheUtil.cacheSave("selfMessage",LoginActivity.this, Constant.SELF_USER);
-                                Constant.CLIENT=new Client(Constant.SELF_USER);
-                                new Thread(Constant.CLIENT).start();
-                                Intent intent=new Intent(LoginActivity.this, BootService.class);
-                                intent.putExtra("user",Constant.SELF_USER);
-                                startService(intent);*/
+                                Constant.SD_PATH=Constant.SD_PATH+jsonObj.getString("user_id")+"/";
                                 User user=new User();
+//                                修改存储根目录
                                 user.setId(jsonObj.getString("user_id"));
                                 user.setProfile_image_url(jsonObj.getString("user_photo"));
                                 user.setDescription(jsonObj.getString("user_self"));
@@ -155,6 +151,7 @@ public class LoginActivity extends BaseActivity{
                                     }
 
                                 }
+
                             }catch (JSONException e){
                                 Log.e("error",e.getMessage());
                             }
@@ -201,6 +198,16 @@ public class LoginActivity extends BaseActivity{
                                 DialogUtil.showDialog(LoginActivity.this
                                         , "用户名称或者密码错误，请重新输入！", false);
                             }
+                            try{
+                                if (jsonObj.getInt("error")!=0){
+                                    DialogUtil.showDialog(LoginActivity.this
+                                            , "连接服务器失败，请重试！", false);
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            progressBar.setVisibility(View.GONE);
+                            login.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -220,6 +227,7 @@ public class LoginActivity extends BaseActivity{
             {
                 return true;
             }
+
         }
         catch (Exception e)
         {

@@ -27,9 +27,9 @@ import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 
 import com.example.asus.activity.MainActivity;
-import com.example.asus.constant.Constant;
+import Constant;
 import com.example.asus.he.R;
-import com.example.asus.util.TagUtil;
+import TagUtil;
 
 import java.util.AbstractList;
 import java.util.ArrayList;

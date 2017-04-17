@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.asus.he.R;
-import com.example.asus.ui.ScreenUtil;
+import com.example.asus.util.ScreenUtil;
 import com.example.asus.util.ImageScan;
 import com.example.asus.view.AlbumFolderInfo;
 import com.example.asus.view.ImageInfo;

@@ -8,8 +8,8 @@
     >
     <!--定义一个ImageView，用于作为列表项的一部分-->
     <ImageView
-        android:layout_width="@dimen/button_size"
-        android:layout_height="@dimen/button_size"
+        android:layout_width="@dimen/small_button_size"
+        android:layout_height="@dimen/small_button_size"
         android:id="@+id/header"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         />

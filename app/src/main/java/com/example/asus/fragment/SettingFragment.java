@@ -23,8 +23,6 @@ import com.example.asus.activity.TrueSettingActivity;
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
 import com.example.asus.util.LogUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,7 +5,7 @@
         android:id="@+id/layout">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
+        android:layout_height="@dimen/button_size"
         android:id="@+id/head_layout"
         android:background="@color/bottom_color"
         >
@@ -74,7 +74,6 @@
                     android:horizontalSpacing="@dimen/space_size"
                     android:numColumns="3"
                     android:verticalSpacing="@dimen/space_size"
-
                     android:layout_below="@id/send_content"/>
 
                 <RelativeLayout

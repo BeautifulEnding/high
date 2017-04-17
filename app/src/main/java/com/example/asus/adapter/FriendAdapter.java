@@ -1,7 +1,6 @@
 package com.example.asus.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,7 @@ public class FriendAdapter extends BaseAdapter{
         FriendViewHolder holder;
         if (convertView==null){
             holder=new FriendViewHolder();
-            convertView= LayoutInflater.from(mContext).inflate(R.layout.setting_list_item,null);
+            convertView= LayoutInflater.from(mContext).inflate(R.layout.friend_list_item,null);
             holder.name=(TextView)convertView.findViewById(R.id.name);
             holder.header=(ImageView) convertView.findViewById(R.id.header);
             convertView.setTag(holder);

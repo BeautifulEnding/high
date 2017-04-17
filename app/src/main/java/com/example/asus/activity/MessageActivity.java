@@ -1,7 +1,5 @@
 package com.example.asus.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,21 +7,15 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2016/9/28 0028.
@@ -144,14 +136,13 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v){
         switch (v.getId()){
             case R.id.name_reverse:
-                startActivity(intent);
+                MyApplication.getInstance().removeActivity(MessageActivity.this);
                 finish();
                 break;
             case R.id.save:
                 name=editText.getText().toString();
                 intent.putExtra(tag,name);
                 //Toast.makeText(MessageActivity.this,"更换信息成功",Toast.LENGTH_SHORT).show();
-                startActivity(intent);
                 //结束该activity
                 MyApplication.getInstance().removeActivity(MessageActivity.this);
                 finish();

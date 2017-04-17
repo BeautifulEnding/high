@@ -3,13 +3,11 @@ package com.example.asus.broadreceiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.example.asus.activity.MainActivity;
 import com.example.asus.activity.MyApplication;
 import com.example.asus.client.entity.Message;
 import com.example.asus.constant.Constant;
-import com.example.asus.service.BootService;
 
 /**
  * Created by Administrator on 2017/2/28 0028.

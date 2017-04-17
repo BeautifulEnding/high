@@ -3,8 +3,6 @@ package com.example.asus.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
@@ -19,7 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.asus.adapter.TopicAdapter;
 import com.example.asus.adapter.TopicListViewAdapter;
 import com.example.asus.he.R;
 import com.example.asus.util.LogUtil;

@@ -8,6 +8,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
+import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -19,7 +20,6 @@ public class IndexActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.getInstance().addActivity(this);
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
         setContentView(R.layout.index);
 //        设置动画
         AlphaAnimation animation=new AlphaAnimation(0.0f,1.0f);
@@ -41,6 +41,7 @@ public class IndexActivity extends BaseActivity{
                 if (preferences.contains("user_id")){
                     Intent intent=new Intent(IndexActivity.this, MainActivity.class);
                     startActivity(intent);
+                    Constant.SD_PATH=Constant.SD_PATH+preferences.getString("user_id",null)+"/";
                 }
                 else{
                     Intent intent=new Intent(IndexActivity.this, LoginActivity.class);

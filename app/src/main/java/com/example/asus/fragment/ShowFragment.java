@@ -1,26 +1,18 @@
 package com.example.asus.fragment;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.asus.activity.AddTopicActivity;
 import com.example.asus.activity.MainActivity;
 import com.example.asus.adapter.SimpleAdapter;
 import com.example.asus.constant.Constant;
@@ -34,14 +26,12 @@ import com.example.asus.util.DownloadUtil;
 import com.example.asus.util.HttpUtil;
 import com.example.asus.util.LogUtil;
 import com.example.asus.util.RecyclerViewUtils;
-import com.example.asus.util.SDCardUtil;
 import com.example.asus.util.ToastUtil;
 import com.example.asus.view.HomeFragmentView;
 import com.example.asus.view.HomeHeadView;
 import com.example.asus.widget.EndlessRecyclerOnScrollListener;
 import com.example.asus.widget.LoadingFooter;
 import com.example.asus.widget.RecyclerViewStateUtils;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -60,7 +50,8 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
     private List<JSONObject> objects=null;
 //    记录content对象
     private ArrayList<Content> contents=new ArrayList<>();
-    private Spinner spinner=null;
+//    private Spinner spinner=null;
+    private TextView topicNameView;
     public static long tag;
     public List<Long> topicsTag=new ArrayList<>();
     private SharedPreferences loginPre;
@@ -92,7 +83,8 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
 //        tag=Long.parseLong(contentPre.getString("tag",0+""));
         tag=contentPre.getLong("tag",0);
 //        LogUtil.e("tag---------------------->"+tag);
-        spinner=(Spinner) getActivity().findViewById(R.id.spinner);
+//        spinner=(Spinner) getActivity().findViewById(R.id.spinner);
+        topicNameView=(TextView)getActivity().findViewById(R.id.name);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_widget);
         noContentView=(TextView) rootView.findViewById(R.id.noContent);
@@ -108,7 +100,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
                 if (tag!=0) {
 //                    本地存在缓存，直接加载
 //                   boolean cache= cacheLoad(spinner.getSelectedItem().toString(),getActivity());
-                    boolean cache= CacheUtil.cacheLoad(spinner.getSelectedItem().toString(),mActivity,contents,homeFragmentView);
+                    boolean cache= CacheUtil.cacheLoad(topicNameView.getText().toString(),mActivity,contents,homeFragmentView);
                     if (!cache){
 //                        如果没有缓存，刷新数据
                         refreshData();
@@ -191,7 +183,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
         MainActivity.currFragTag = Constant.FRAGMENT_FLAG_SHOW;
     }
     private List<JSONObject> receiveContent(){
-        String topic=spinner.getSelectedItem().toString();
+        String topic=topicNameView.getText().toString();
         String url="";
         if (topic.equals("所有")){
             url= HttpUtil.BASE_URL+"receiveContent.jsp?topic="+topic+"&tag="+tag;
@@ -225,9 +217,11 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
                         getContentList();
                 }
             }catch (Exception e){
+                homeFragmentView.hideLoadingIcon();
                 LogUtil.e("捕获到异常"+e.getMessage());
             }
         }
+        homeFragmentView.hideLoadingIcon();
     }
     /**
      * 把列表滑动到顶部，refreshDrata为true的话，会同时获取更新的数据
@@ -372,7 +366,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
         contents.clear();
         mAdapter.notifyDataSetChanged();
 //        boolean cache=cacheLoad(spinner.getSelectedItem().toString(),mActivity);
-        boolean cache= CacheUtil.cacheLoad(spinner.getSelectedItem().toString(),mActivity,contents,homeFragmentView);
+        boolean cache= CacheUtil.cacheLoad(topicNameView.getText().toString(),mActivity,contents,homeFragmentView);
         if (!cache){
             LogUtil.e("正在加载没有内容的headView");
             /*TextView view=new TextView(mActivity);
@@ -454,7 +448,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
         ContentList contentList=new ContentList();
         contentList.setContents(contents);
 //        cacheSave(spinner.getSelectedItem().toString(),getActivity(),contentList);
-        CacheUtil.cacheSave(spinner.getSelectedItem().toString(),mActivity,contentList);
+        CacheUtil.cacheSave(topicNameView.getText().toString(),mActivity,contentList);
         if (mHeaderAndFooterRecyclerViewAdapter.getHeaderViewsCount()>0){
             mHeaderAndFooterRecyclerViewAdapter.removeHeaderView(mHeaderAndFooterRecyclerViewAdapter.getHeaderView());
         }
@@ -465,7 +459,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
         homeFragmentView.updateListView(contents);
 //                homeFragmentView.showRecyclerView();
 
-        if (spinner.getSelectedItem().toString().equals("所有")){
+        if (topicNameView.getText().toString().equals("所有")){
             LogUtil.e("当前话题为所有");
 //            更新tag
             tag=contents.get(contents.size()-1).getTag();
@@ -476,7 +470,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
             contentEditor.putLong("tag",tag);
             contentEditor.commit();
         }else{
-            tagEditor.putLong(spinner.getSelectedItem().toString(),contents.get(contents.size()-1).getTag());
+            tagEditor.putLong(topicNameView.getText().toString(),contents.get(contents.size()-1).getTag());
             tagEditor.commit();
         }
     }

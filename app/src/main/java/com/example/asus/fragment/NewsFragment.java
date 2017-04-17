@@ -2,7 +2,6 @@ package com.example.asus.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,20 +31,19 @@ import com.example.asus.client.entity.Message;
 import com.example.asus.client.entity.User;
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
-import com.example.asus.util.CacheUtil;
+import com.example.asus.util.CacUtil;
 import com.example.asus.util.HttpUtil;
 import com.example.asus.util.LogUtil;
 import com.example.asus.util.ToastUtil;
 import com.example.asus.util.UserUtil;
 
 import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NewsFragment extends BaseFragment{
-    //这是搜索页面Search,缺个通讯录好友页面
+    //通讯录好友页面
 //	定义listView，显示好友的首字母索引
 	private ListView listView;
 	private ArrayAdapter indexAdapter;
@@ -73,6 +71,8 @@ public class NewsFragment extends BaseFragment{
 	private List<String> response;
 	private List<Message> messageList=new ArrayList<>();
 	private List<User> userList=new ArrayList<>();
+//	自己
+	private User selfUser;
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class NewsFragment extends BaseFragment{
 		super.onAttach(activity);
 	}
 	private void initView(View newsLayout){
+		selfUser=UserUtil.getUser("selfMessage",getActivity());
 		shadow= newsLayout.findViewById(R.id.shadow);
 		index=(LinearLayout)newsLayout.findViewById(R.id.index);
 		reverse=(ImageView)newsLayout.findViewById(R.id.index_arrow);
@@ -111,8 +112,55 @@ public class NewsFragment extends BaseFragment{
 		LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(friendRequestAdapter);
-//		加载好友请求
-		response=CacheUtil.cacheLoad(getActivity(),Constant.LOAD_MESSAGE);
+		response= CacUtil.cacheLoad(getActivity(),Constant.LOAD_USER);
+		userList.clear();
+		if (response ==null){
+			//			到服务器去查看是否存在好友，不能只单单考虑缓存里的内容
+			String url=HttpUtil.BASE_URL+"getFriends.jsp?user_id="+selfUser.getId();
+			try{
+				JSONObject object=new JSONObject(HttpUtil.getRequest(url));
+				if (object.length()!=0){
+					LogUtil.e("有好友");
+					for (int i=0;i<object.length();i++){
+						LogUtil.e(object.getString("friend"+i));
+						User user=UserUtil.findUser(object.getString("friend"+i));
+						CacUtil.cacheSave(user.getId(),getActivity(),user);
+						userList.add(user);
+					}
+					if (noFriendTextView.getVisibility()==View.VISIBLE){
+						noFriendTextView.setVisibility(View.GONE);
+						recyclerView.setVisibility(View.VISIBLE);
+						friendView.setVisibility(View.VISIBLE);
+					}
+					friendAdapter=new FriendAdapter(userList,getActivity());
+					//为ListView设置Adapter
+					friendView.setAdapter(friendAdapter);
+				}else{
+					LogUtil.e("没有好友");
+				}
+			}catch (Exception e){
+				LogUtil.e(e.getMessage());
+			}
+		}
+		if (response!=null){
+			if (noFriendTextView.getVisibility()==View.VISIBLE){
+				noFriendTextView.setVisibility(View.GONE);
+				recyclerView.setVisibility(View.VISIBLE);
+				friendView.setVisibility(View.VISIBLE);
+			}
+			for (int i=0;i<response.size();i++) {
+				User user = User.parse(response.get(i));
+				userList.add(user);
+			}
+				friendAdapter=new FriendAdapter(userList,getActivity());
+				//为ListView设置Adapter
+				friendView.setAdapter(friendAdapter);
+		}
+
+
+		//		加载好友请求
+		response= CacUtil.cacheLoad(getActivity(),Constant.LOAD_MESSAGE);
+		messageList.clear();
 		if (response!=null){
 			for (int i=0;i<response.size();i++){
 				messageList.add(Message.parse(response.get(i)));
@@ -123,22 +171,8 @@ public class NewsFragment extends BaseFragment{
 					updateRecyclerView(messageList.get(i));
 				}
 			}
-		}
-		response=CacheUtil.cacheLoad(getActivity(),Constant.LOAD_USER);
-		userList.clear();
-		if (response !=null){
-			if (noFriendTextView.getVisibility()==View.VISIBLE){
-				noFriendTextView.setVisibility(View.GONE);
-				recyclerView.setVisibility(View.VISIBLE);
-				friendView.setVisibility(View.VISIBLE);
-			}
-			for (int i=0;i<response.size();i++){
-				User user=User.parse(response.get(i));
-				userList.add(user);
-			}
-			friendAdapter=new FriendAdapter(userList,getActivity());
-				//为ListView设置Adapter
-			friendView.setAdapter(friendAdapter);
+		}else {
+			LogUtil.e("没有加载到好友请求");
 		}
 	}
 	private void initEvent(){
@@ -211,10 +245,12 @@ public class NewsFragment extends BaseFragment{
 		friendView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//				直接转到聊天activity，为friendView设置上下文菜单
+//				现在是直接转到聊天activity，需要为friendView设置上下文菜单
 				Intent intent=new Intent(getActivity(), ChatActivity.class);
-				TextView textView=(TextView)view.findViewById(R.id.name);
-				intent.putExtra("user_name",textView.getText().toString());
+//				TextView textView=(TextView)view.findViewById(R.id.name);
+//				intent.putExtra("user_name",textView.getText().toString());
+				User user=userList.get(position);
+				intent.putExtra("friends",user);
 				getActivity().startActivity(intent);
 			}
 		});

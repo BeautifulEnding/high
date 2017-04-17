@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.asus.he.R;
-import com.example.asus.util.LogUtil;
 
 /**
  * Created by Administrator on 2017/2/15 0015.

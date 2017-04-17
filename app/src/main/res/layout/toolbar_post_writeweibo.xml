@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="44dp"
-    android:background="@color/topbar_bg">
+    android:layout_height="@dimen/button_size"
+    android:background="@color/bottom_color">
 
     <TextView
         android:id="@+id/idea_cancal"
@@ -20,7 +20,6 @@
         android:layout_width="116dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/compose_toolbar_foldername_auto"
         android:clickable="true"
         android:gravity="center"
         android:orientation="vertical">
@@ -29,7 +28,7 @@
             android:id="@+id/inputType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="发"
+            android:text="转发"
             android:textColor="#545454"
             android:textSize="17sp" />
 

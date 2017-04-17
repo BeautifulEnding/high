@@ -23,7 +23,10 @@
             android:layout_width="100dp"
             android:layout_height="@dimen/photo_size"
             android:id="@+id/portrait"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:scaleX="1"
+            />
         </RelativeLayout>
     <ListView
         android:layout_width="match_parent"

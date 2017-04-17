@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.example.asus.entity.Content;
 import com.example.asus.he.R;
-import com.example.asus.util.ScreenTools;
+import com.example.asus.util.ScreenUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.ImageSize;

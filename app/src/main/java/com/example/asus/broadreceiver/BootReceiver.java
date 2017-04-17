@@ -4,13 +4,9 @@ import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 import com.example.asus.client.entity.User;
 import com.example.asus.service.BootService;
-import com.example.asus.service.SendService;
-import com.example.asus.util.LogUtil;
 
 import java.util.List;
 
@@ -21,7 +17,7 @@ import java.util.List;
 public class BootReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent){
-       if (!isServiceRunning(context,"com.example.asus.service.BootService")){
+       if (!isServiceRunning(context,"BootService")){
 //           Log.e("BootReceiver","接收到广播,正在开启BootService");
            Intent intent1=new Intent(context, BootService.class);
            intent1.putExtra("user",(User)intent.getSerializableExtra("user"));
