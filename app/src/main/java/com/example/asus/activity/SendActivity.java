@@ -79,6 +79,7 @@ public class SendActivity extends Activity{
     String[] result = new String[]{"公开", ""};
     //    定义一个变量表示当前照片数
     int photoNum = 1;
+    String topic="";
 
     private GridView gridView = null;
     private GridAdapter gridAdapter = null;
@@ -119,6 +120,23 @@ public class SendActivity extends Activity{
         final Display display = getWindowManager().getDefaultDisplay() ;
         //得到文本编辑框
         editText=(EditText)findViewById(R.id.send_content);
+        switch (getIntent().getStringExtra("topic")){
+            case "帮助":
+                topic="help";
+                break;
+            case "约":
+                topic="together";
+                editText.setHint("记得表明时间地点还有需要多少小伙伴一起哟！...");
+                break;
+            case "we are one":
+                topic="one";
+                editText.setHint("发表内容...");
+                break;
+            default:
+                editText.setHint("发表内容...");
+                topic="all";
+                break;
+        }
         final RelativeLayout layout=(RelativeLayout) findViewById(R.id.layout);
         show_Animation=AnimationUtils.loadAnimation(this,R.anim.send_out_anim);
         hidden_Animation=AnimationUtils.loadAnimation(this,R.anim.input_hidden);
@@ -181,7 +199,7 @@ public class SendActivity extends Activity{
 //                    如果netConnected
                     if (isNetWorkConnected()){
                         //                将数据上传到服务器
-                        map.put("topic",getIntent().getStringExtra("topic"));
+                        map.put("topic",topic);
                         map.put("id",getSharedPreferences("login",MODE_PRIVATE).getString("user_id",null));
                         map.put("content",editText.getText().toString().trim());
                         Thread thread=new Thread(){

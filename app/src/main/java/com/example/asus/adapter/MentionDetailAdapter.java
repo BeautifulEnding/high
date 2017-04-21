@@ -37,7 +37,7 @@ public class MentionDetailAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mView = LayoutInflater.from(mContext).inflate(R.layout.mainfragment_weiboitem_detail_commentbar_comment_item, parent, false);
+        mView = LayoutInflater.from(mContext).inflate(R.layout.detail_commentbar_comment_item, parent, false);
         RetweetViewHolder commentViewHolder = new RetweetViewHolder(mView);
         return commentViewHolder;
     }

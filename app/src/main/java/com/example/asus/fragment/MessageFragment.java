@@ -40,6 +40,7 @@ public class MessageFragment extends BaseFragment {
 //        container不为空时，false，表示以container的width和height来为资源布局
 //若为true，则是将布局作为view添加到container中
         rootView=inflater.inflate(R.layout.message_fragment_layout,container,false);
+        Constant.CHAT_PATH=Constant.SD_PATH+"chat";
         initView();
         initEvent();
        return rootView;
@@ -54,8 +55,7 @@ public class MessageFragment extends BaseFragment {
         messageListview=(ListView) rootView.findViewById(R.id.message_list);
         textView=(TextView)rootView.findViewById(R.id.nomessage);
         allMessage= SDCardUtil.getAllFile(Constant.CHAT_PATH);
-        if (allMessage!=null){
-            LogUtil.e("allMessage:不为空"+allMessage[0]);
+        if (allMessage!=null && allMessage.length!=0){
             messageList.clear();
             for (int i=0;i<allMessage.length;i++){
                 String file=allMessage[i].substring(0,allMessage[i].lastIndexOf('.'));

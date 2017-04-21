@@ -18,22 +18,29 @@ import java.util.List;
  */
 
 public class CacheUtil {
-    public static void cacheSave(String friend, Context context, ContentList statusList) {
+    public static void cacheSave(String topic, Context context, ContentList statusList) {
         String response = new Gson().toJson(statusList);
-        /*if (topic ==Constant.HELP) {
-//            帮助
-            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", "帮助" + ".txt", response);
-        } else if (topic == Constant.APPOINTMENT) {
-//            约
-            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", "约" + ".txt", response);
-        } else {
-//            we are one
-            SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", topic + ".txt", response);
-        }*/
-//        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/topic", friend + ".txt", response);
-        SDCardUtil.put(context, Constant.SD_PATH+"topic", friend + ".txt", response);
+        SDCardUtil.put(context, Constant.SD_PATH+"topic", topic + ".txt", response);
     }
-
+    public static void cacheSave(int topicType, Context context, ContentList statusList) {
+        String topic="";
+        switch (topicType){
+            case 0:
+                topic="帮助";
+                break;
+            case 1:
+                topic="约";
+                break;
+            case 2:
+                topic="we are one";
+                break;
+            default:
+                topic="所有";
+                break;
+        }
+        String response = new Gson().toJson(statusList);
+        SDCardUtil.put(context, Constant.SD_PATH+"topic", topic + ".txt", response);
+    }
     public static void cacheSave(String fileName, Context context, User user) {
         if (fileName.equals("selfMessage")){
             String response = new Gson().toJson(user);
@@ -48,8 +55,17 @@ public class CacheUtil {
     }
     public static void cacheSave(String fileName, Context context, Message messageList){
         String response = new Gson().toJson(messageList);
-//        SDCardUtil.put(context, SDCardUtil.getSDCardPath() + "/high/requestFriend", fileName+ ".txt", response);
-        SDCardUtil.put(context, Constant.SD_PATH+"requestFriend", fileName+ ".txt", response);
+        switch (fileName){
+            case "helpMessage":
+                SDCardUtil.put(context, Constant.SD_PATH+"helpMessage", fileName+ ".txt", response);
+                break;
+            case "requestFriend":
+                SDCardUtil.put(context, Constant.SD_PATH+"requestFriend", fileName+ ".txt", response);
+                break;
+            case "togetherMessage":
+                SDCardUtil.put(context, Constant.SD_PATH+"togetherMessage", fileName+ ".txt", response);
+
+        }
     }
     public static void cacheDelete(String user_id){
 //        SDCardUtil.deleteMessage(user_id,SDCardUtil.getSDCardPath() + "/high/requestFriend");
@@ -72,6 +88,30 @@ public class CacheUtil {
 //            ToastUtil.showLong(getActivity(),"还没有缓存的内容");
             return false;
         }
+    }
+
+    public static ContentList cacheLoad(int type,Context context){
+        String response=null;
+        switch (type){
+            case 0:
+                response=SDCardUtil.get(context, Constant.SD_PATH+"topic",  "帮助.txt");
+                break;
+            case 1:
+                response=SDCardUtil.get(context, Constant.SD_PATH+"topic",  "约.txt");
+                break;
+            case 2:
+                response=SDCardUtil.get(context, Constant.SD_PATH+"topic",  "we are one.txt");
+                break;
+            default:
+                response=SDCardUtil.get(context, Constant.SD_PATH+"topic",  "所有.txt");
+                break;
+
+        }
+        if (response!=null){
+            return ContentList.parse(response);
+        }
+
+        return null;
     }
 
     public static User cacheLoad(String fileName, Context context) {

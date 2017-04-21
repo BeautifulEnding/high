@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,7 +60,7 @@ public class OriginPicTextHeaderView extends LinearLayout {
 
     public void init(Context context, Content status) {
         mContext = context;
-        mView = inflate(context, R.layout.mainfragment_weiboitem_detail_commentbar_origin_pictext_headview, this);
+        mView = inflate(context, R.layout.detail_commentbar_origin_pictext_headview, this);
 //        原创布局
         origin_weibo_layout = (LinearLayout) mView.findViewById(R.id.origin_weibo_layout);
 //        头像

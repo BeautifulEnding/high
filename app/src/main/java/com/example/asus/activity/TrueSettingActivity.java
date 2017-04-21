@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +15,7 @@ import android.widget.PopupMenu;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
 
 import java.util.ArrayList;
@@ -74,8 +76,19 @@ public class TrueSettingActivity extends Activity{
                             SharedPreferences.Editor editor=preferences.edit();
                             editor.clear();
                             editor.commit();
+                            //清除话题消息
+                            SharedPreferences preferences1=getSharedPreferences("content",MODE_PRIVATE);
+                            SharedPreferences.Editor editor1=preferences.edit();
+                            editor1.clear();
+                            editor1.commit();
+                            SharedPreferences preferences2=getSharedPreferences("content",MODE_PRIVATE);
+                            SharedPreferences.Editor editor2=preferences.edit();
+                            editor2.clear();
+                            editor2.commit();
+
                         }
-                        MyApplication.getInstance().exit();
+                        MyApplication.getInstance().removeAll();
+                        Constant.SD_PATH=Environment.getExternalStorageDirectory().getAbsolutePath()+"/high/";
                         Intent intent=new Intent(TrueSettingActivity.this,LoginActivity.class);
                         startActivity(intent);
                         return true;

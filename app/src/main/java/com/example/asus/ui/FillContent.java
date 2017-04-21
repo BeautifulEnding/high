@@ -70,7 +70,7 @@ public class FillContent {
 //        填充用户名
         user_id.setText(content.getId());
 //        填充发布时间,现在为毫秒值
-        send_time.setText(content.getTag()+"");
+        send_time.setText(DateUtils.translateDate(content.getTag(),System.currentTimeMillis()));
 //        填充来自的地方
         comefrom.setText("   未实现");
     }

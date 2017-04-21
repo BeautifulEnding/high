@@ -57,6 +57,9 @@
     <string name="yesterday">昨天</string>
     <string name="the_day_before_yesterday">前天</string>
     <string name="find_all_topic">查看所有已存在话题</string>
+    <string name="title_activity_descri">DescriActivity</string>
+    <string name="title_activity_help_message">HelpMessageActivity</string>
+    <string name="title_activity_together_message">TogetherMessageActivity</string>
     <!--<string name="setting_tag">设置备注</string>-->
     <!--<string name="add_friend">添加好友</string>-->
     <!--<string name="location">位置</string>-->

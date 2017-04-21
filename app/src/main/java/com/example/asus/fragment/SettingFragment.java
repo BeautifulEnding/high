@@ -18,7 +18,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.asus.activity.HelpMessageActivity;
 import com.example.asus.activity.MainActivity;
+import com.example.asus.activity.TogetherMessageActivity;
 import com.example.asus.activity.TrueSettingActivity;
 import com.example.asus.constant.Constant;
 import com.example.asus.he.R;
@@ -46,7 +48,7 @@ public class SettingFragment extends BaseFragment {
     //定义用户名
     private TextView user_name;
     private String[] names;
-    private int[] iamgesId=new int[]{R.drawable.photo,R.drawable.comments,R.drawable.phraise};
+    private int[] iamgesId=new int[]{R.drawable.helpmessae,R.drawable.comments,R.drawable.phraise};
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -105,14 +107,17 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
-                    //相册
+                    //帮助
                     case 0:
-                        //Toast.makeText(getActivity(),"这是设置Item",Toast.LENGTH_SHORT).show();
-                        //Intent intent=new Intent(getActivity(), SettingActivity.class);
+                        Intent intent1=new Intent(getActivity(),HelpMessageActivity.class);
+                        startActivity(intent1);
                         break;
-                    //评论
+                    //约
                     case 1:
+                        Intent intent2=new Intent(getActivity(),TogetherMessageActivity.class);
+                        startActivity(intent2);
                         break;
+                    //分享消息
                     case 2:
                         break;
 

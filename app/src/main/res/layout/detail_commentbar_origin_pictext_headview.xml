@@ -5,11 +5,11 @@
     android:orientation="vertical"
     android:paddingTop="10dp">
 
-    <include layout="@layout/home_weiboitem_original_pictext" />
+    <include layout="@layout/home_original_pictext" />
 
-    <include layout="@layout/home_weiboitem_detail_bottom_bar" />
+    <include layout="@layout/home_detail_bottom_bar" />
 
-    <include layout="@layout/mainfragment_weiboitem_detail_commentbar_comment_item_none" />
+    <include layout="@layout/detail_commentbar_comment_item_none" />
 </LinearLayout>
 
 

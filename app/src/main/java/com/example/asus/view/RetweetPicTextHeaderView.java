@@ -65,7 +65,7 @@ public class RetweetPicTextHeaderView extends LinearLayout {
 
     public void init(Context context, Content status) {
         mContext = context;
-        mView = inflate(context, R.layout.mainfragment_weiboitem_detail_commentbar_retweet_pictext_headview, this);
+        mView = inflate(context, R.layout.detail_commentbar_retweet_pictext_headview, this);
         retweet_weibo_layout = (LinearLayout) findViewById(R.id.retweet_weibo_layout);
         profile_img = (ImageView) findViewById(R.id.profile_img);
         profile_name = (TextView) findViewById(R.id.profile_name);

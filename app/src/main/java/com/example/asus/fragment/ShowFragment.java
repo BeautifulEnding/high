@@ -184,9 +184,23 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
     }
     private List<JSONObject> receiveContent(){
         String topic=topicNameView.getText().toString();
+        switch (topic){
+            case "帮助":
+                topic="help";
+                break;
+            case "约":
+                topic="together";
+                break;
+            case "we are one":
+                topic="one";
+                break;
+            default:
+                topic="all";
+                break;
+        }
         String url="";
-        if (topic.equals("所有")){
-            url= HttpUtil.BASE_URL+"receiveContent.jsp?topic="+topic+"&tag="+tag;
+        if (topic.equals("all")){
+            url= HttpUtil.BASE_URL+"receiveContent.jsp?topic=all"+"&tag="+tag;
         }else{
             url= HttpUtil.BASE_URL+"receiveContent.jsp?topic="+topic+"&tag="+tagPre.getLong(topic,0);
         }
@@ -432,6 +446,7 @@ public class ShowFragment extends BaseFragment implements HomeFragmentView{
             content.setUser_photo(Constant.USER_PHOTO+objects.get(i).getString("photo"));
             content.setId(objects.get(i).getString("id"));
             content.setContent(objects.get(i).getString("content"));
+            content.setType(objects.get(i).getInt("type"));
             String name="";
             ArrayList<String> photo=new ArrayList<String>();
             for (int j=0;j<9;j++) {

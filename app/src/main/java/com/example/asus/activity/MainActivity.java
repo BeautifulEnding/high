@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ import com.example.asus.fragment.NewsFragment;
 import com.example.asus.fragment.ShowFragment;
 import com.example.asus.he.R;
 import com.example.asus.ui.BottomControlPanel;
+import com.example.asus.util.CacheUtil;
 import com.example.asus.util.ScreenUtil;
 import com.example.asus.ui.groupwindow.GroupPopWindow;
 import com.example.asus.ui.groupwindow.IGroupItemClick;
@@ -46,6 +48,9 @@ import com.example.asus.util.UserUtil;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity implements BottomControlPanel.BottomPanelCallback{
     //定义SengFragment的顶部图片
@@ -95,9 +100,9 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
         setContentView(R.layout.activity_main);
         User user= CacUtil.cacheLoad("selfMessage",this);
         if (user!=null){
+            LogUtil.e("启动client线程");
             client=new Client(user,this);
             client.start();
-//            ManageClientThread.addClientConServerThread(user,client);
         }else{
             LogUtil.e("BootService user为空");
         }
@@ -182,15 +187,31 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
                     changeFragment(Constant.BTN_FLAG_SEARCH);
                     break;
                 case MessageType.COM_MES:case MessageType.PICTURE_MESSAGE:case MessageType.VOICE_MESSAGE:
+                    LogUtil.e("接收到聊天消息");
                     NotificationUtil.showHangNotification(message,MainActivity.this);
                     break;
-                case MessageType.UPDATE_MESSAGE:
+                case MessageType.NOTIFICATION_LM:
                     Intent intent2=new Intent(MainActivity.this, ChatActivity.class);
-                    User user2=CacUtil.cacheLoad(message.getSender_id(),MainActivity.this);
+                    User user2=UserUtil.getUser(message.getSender_id(),MainActivity.this);
                     intent.putExtra("friends",user2);
-                    startActivity(intent);
+                    startActivity(intent2);
                     break;
-
+                case MessageType.HELP_MESSAGE:case MessageType.TOGETHER_MESSAGE:case MessageType.ONE_MESSAGE:
+                    client.setMessage(new Gson().toJson(message));
+                    break;
+                case MessageType.NOTIFICATION_HELP:
+                    Intent intent1=new Intent(MainActivity.this,HelpMessageActivity.class);
+//                    intent1.putExtra("message",message);
+//                    CacheUtil.cacheSave("helpMessage",MainActivity.this,message);
+                    message.setMessageType(0);
+                    CacUtil.cacheAppend("helpMessage",MainActivity.this,message);
+                    startActivity(intent1);
+                    break;
+                case MessageType.NOTIFICATION_TOGETHER:
+                    Intent intent3=new Intent(MainActivity.this,TogetherMessageActivity.class);
+//                    intent3.putExtra("message",message);
+                    startActivity(intent3);
+                    break;
             }
         }
     }
@@ -394,6 +415,7 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
+
 	}
     public void changeFragment(int itemId){
         onBottomPanelClick(itemId);
@@ -463,8 +485,11 @@ public class MainActivity extends BaseActivity implements BottomControlPanel.Bot
         Message message=new Message();
         message.setType(MessageType.EXIT);
         client.setMessage(new Gson().toJson(message));
-        client.stop();
+//        client.stop();
         LogUtil.e("mainActivity被销毁");
+        unregisterReceiver(br);
     }
+
+
 
 }

@@ -33,14 +33,43 @@ public class Content implements Parcelable {
     int ifPharise;
 //    是否是转发来的内容
     int ifretweet;
+    int type;
+//    帮助状态,完全由发布者更改状态
+    /**
+     * 1、还没有人帮助
+     * 2、正在帮助，还没完成
+     * 3、已解决
+     */
+    int helpState=0;
+//    约的状态
+    /**
+     * 1、还未有人
+     * 2、还没集齐了条件
+     * 3、放弃或者集齐了条件
+     */
+    int toState=0;
+//    内容所属的话题
+    int topic=0;
 //    用户
     private User user;
+    public void setTopic(int topic){
+        this.topic=topic;
+    }
+    public int getTopic(){
+        return topic;
+    }
     public User getUser(){
         User user=new User();
         user.id=this.id;
         user.profile_image_url=this.user_photo;
         this.user=user;
         return user;
+    }
+    public void setType(int type){
+        this.type=type;
+    }
+    public int getType(){
+        return type;
     }
     public void setUser_photo(String user_photo) {
         this.user_photo = user_photo;
@@ -120,6 +149,8 @@ public class Content implements Parcelable {
         dest.writeInt(this.ifPharise);
         dest.writeParcelable(this.user,flags);
         dest.writeInt(this.ifretweet);
+        dest.writeInt(this.type);
+        dest.writeInt(this.topic);
     }
     public static final Creator<Content> CREATOR = new Creator<Content>() {
         @Override
@@ -136,6 +167,8 @@ public class Content implements Parcelable {
             content.ifPharise=source.readInt();
             content.user=source.readParcelable(User.class.getClassLoader());
             content.ifretweet=source.readInt();
+            content.type=source.readInt();
+            content.topic=source.readInt();
             return content;
         }
 

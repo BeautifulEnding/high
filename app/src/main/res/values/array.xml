@@ -8,9 +8,9 @@
         <item>自定义</item>
     </string-array>
     <string-array name="setting_list">
-        <item>我的相册</item>
-        <item>我的评论</item>
-        <item>我的点赞</item>
+        <item>帮助消息</item>
+        <item>约消息</item>
+        <item>分享消息</item>
     </string-array>
     <string-array name="user_setting_list">
         <item>账号</item>

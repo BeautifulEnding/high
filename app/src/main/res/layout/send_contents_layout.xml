@@ -3,39 +3,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/layout">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_size"
-        android:id="@+id/head_layout"
-        android:background="@color/bottom_color"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/cancel_button"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:typeface="monospace"
-            android:layout_centerVertical="true"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="发布"/>
-        <Button
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/small_button_size"
-            android:layout_alignParentRight="true"
-            android:text="@string/send"
-            android:background="@drawable/button_unenable"
-            android:id="@+id/send_button"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:enabled="false"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
-
+    <include layout="@layout/send_headlayout"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -61,12 +29,13 @@
                     android:layout_height="100dp"
                     android:id="@+id/send_content"
                     android:layout_alignParentTop="true"
-                    android:hint="发表内容..."
+                    android:hint="别忘了注明帮助你有什么报酬哦，好歹给发一张好人卡吧，不然小心没人帮你哦..."
                     android:textSize="@dimen/small_text_size"
                     android:background="@drawable/spinner_bg"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:gravity="fill_vertical"/>
+                    android:gravity="fill_vertical"
+                    />
                 <GridView
                     android:id="@+id/gridView"
                     android:layout_width="fill_parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.asus.he"
     xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.asus.he"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 自启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -28,15 +29,12 @@
         android:label="@string/app_name"
         android:persistent="true"
         android:theme="@style/AppTheme"
-        tools:replace="Android:icon, android:theme"
-        >
+        tools:replace="Android:icon, android:theme">
         <activity
             android:name="com.example.asus.activity.MainActivity"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name="com.example.asus.activity.LoginActivity">
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        </activity>
+        <activity android:name="com.example.asus.activity.LoginActivity" />
         <activity
             android:name="com.example.asus.activity.IndexActivity"
             android:launchMode="singleInstance"
@@ -112,7 +110,7 @@
         <service
             android:name="com.example.asus.service.BootService"
             android:priority="1000"
-            android:process=":BootService"></service>
+            android:process=":BootService" />
 
         <receiver android:name="com.example.asus.broadreceiver.LaunchReceiver">
             <intent-filter>
@@ -126,9 +124,19 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.example.asus.activity.ChatActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
-        <activity android:name="com.example.asus.activity.FriendInfoActivity"/>
+        <activity
+            android:name="com.example.asus.activity.ChatActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity android:name="com.example.asus.activity.FriendInfoActivity" />
+        <activity
+            android:name="com.example.asus.activity.DescriActivity"
+            android:label="@string/title_activity_descri" />
+        <activity
+            android:name="com.example.asus.activity.HelpMessageActivity"
+            android:label="@string/title_activity_help_message" />
+        <activity
+            android:name="com.example.asus.activity.TogetherMessageActivity"
+            android:label="@string/title_activity_together_message"></activity>
     </application>
 
 </manifest>

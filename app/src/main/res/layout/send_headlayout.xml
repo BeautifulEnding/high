@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:id="@+id/head_layout"
+        android:background="@color/bottom_color"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/cancel_button"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:typeface="monospace"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="发布"/>
+        <Button
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/small_button_size"
+            android:layout_alignParentRight="true"
+            android:text="@string/send"
+            android:background="@drawable/button_unenable"
+            android:id="@+id/send_button"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:enabled="false"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>

@@ -22,7 +22,7 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/mainfragment_weiboitemdetail_bottombar" />
+    <include layout="@layout/detail_bottombar" />
 
 </LinearLayout>
 
