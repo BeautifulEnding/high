@@ -46,6 +46,17 @@ public class MyApplication extends Application{
             System.exit(0);
         }
     }
+    public void removeAll() {
+        try {
+            for (Activity activity : activityList) {
+                if (activity != null)
+                    Log.e("activity",activity.toString()+"正在被销毁");
+                activity.finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public Activity getActivity(){
         return activityList.get(0);
     }

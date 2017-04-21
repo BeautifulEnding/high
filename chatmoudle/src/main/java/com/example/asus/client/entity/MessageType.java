@@ -20,6 +20,15 @@ public class MessageType {
     public static final int ACCEPT_NOTIFICATION=13;
     public static final int VOICE_MESSAGE=14;
     public static final int PICTURE_MESSAGE=15;
-    public static final int UPDATE_MESSAGE=16;
+//    public static final int UPDATE_MESSAGE=16;
     public static final int EXIT=17;
+    public static final int NOTIFICATION_LM=18;
+    public static final int HELP_MESSAGE=19;
+    public static final int TOGETHER_MESSAGE=20;
+    public static final int ONE_MESSAGE=21;
+    public static final int NOTIFICATION_HELP=22;
+    public static final int NOTIFICATION_TOGETHER=23;
+    public static final int NOTIFICATION_ONE=24;
+
+
 }

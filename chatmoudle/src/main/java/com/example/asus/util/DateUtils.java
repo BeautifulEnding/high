@@ -8,9 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by wenmingvs on 16/1/9.
- */
 public class DateUtils {
     /**
      * 日期类型 *
@@ -114,7 +111,7 @@ public class DateUtils {
      * @return 当前日期转换为更容易理解的方式
      */
     public static String translateDate(Long time) {
-        long oneDay = 24 * 60 * 60 * 1000;
+        long oneDay = 24 * 60 * 60;
         Calendar current = Calendar.getInstance();
         Calendar today = Calendar.getInstance();    //今天
 
@@ -152,11 +149,11 @@ public class DateUtils {
     public static String translateDate(long time, long curTime) {
         long oneDay = 24 * 60 * 60;
         Calendar today = Calendar.getInstance();    //今天
-        today.setTimeInMillis(curTime * 1000);
+        today.setTimeInMillis(curTime);
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
-        long todayStartTime = today.getTimeInMillis() / 1000;
+        long todayStartTime = today.getTimeInMillis();
         if (time >= todayStartTime) {
             long d = curTime - time;
             if (d <= 60) {
@@ -169,7 +166,7 @@ public class DateUtils {
                 return m + "分钟前";
             } else {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("今天 HH:mm");
-                Date date = new Date(time * 1000);
+                Date date = new Date(time);
                 String dateStr = dateFormat.format(date);
                 if (!TextUtils.isEmpty(dateStr) && dateStr.contains(" 0")) {
                     dateStr = dateStr.replace(" 0", " ");
@@ -179,7 +176,7 @@ public class DateUtils {
         } else {
             if (time < todayStartTime && time > todayStartTime - oneDay) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("昨天 HH:mm");
-                Date date = new Date(time * 1000);
+                Date date = new Date(time);
                 String dateStr = dateFormat.format(date);
                 if (!TextUtils.isEmpty(dateStr) && dateStr.contains(" 0")) {
 
@@ -188,7 +185,7 @@ public class DateUtils {
                 return dateStr;
             } else if (time < todayStartTime - oneDay && time > todayStartTime - 2 * oneDay) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("前天 HH:mm");
-                Date date = new Date(time * 1000);
+                Date date = new Date(time);
                 String dateStr = dateFormat.format(date);
                 if (!TextUtils.isEmpty(dateStr) && dateStr.contains(" 0")) {
                     dateStr = dateStr.replace(" 0", " ");
@@ -196,7 +193,7 @@ public class DateUtils {
                 return dateStr;
             } else {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date date = new Date(time * 1000);
+                Date date = new Date(time);
                 String dateStr = dateFormat.format(date);
                 if (!TextUtils.isEmpty(dateStr) && dateStr.contains(" 0")) {
                     dateStr = dateStr.replace(" 0", " ");

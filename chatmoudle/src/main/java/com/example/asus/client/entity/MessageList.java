@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 
 public class MessageList implements Serializable{
-
     private ArrayList<Message> messages = new ArrayList<Message>();
     private long lastTime;
     private String title;

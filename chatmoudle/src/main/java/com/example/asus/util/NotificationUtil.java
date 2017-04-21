@@ -35,8 +35,19 @@ public class NotificationUtil {
             case MessageType.COM_MES:case MessageType.PICTURE_MESSAGE:case MessageType.VOICE_MESSAGE:
                 mBuilder.setContentTitle("新消息");
                 mBuilder.setContentText(message.getSender_id() + "给你发送了新消息，请及时查看");
-                message.setType(MessageType.UPDATE_MESSAGE);
+                message.setType(MessageType.NOTIFICATION_LM);
                 break;
+            case MessageType.HELP_MESSAGE:
+                mBuilder.setContentTitle("新消息");
+                mBuilder.setContentText(message.getSender_id() + "请求给予你帮助，点击查看详情");
+                message.setType(MessageType.NOTIFICATION_HELP);
+                break;
+            case MessageType.TOGETHER_MESSAGE:
+                mBuilder.setContentTitle("新消息");
+                mBuilder.setContentText(message.getSender_id() + "请求参与‘约’活动，点击查看详情");
+                message.setType(MessageType.NOTIFICATION_TOGETHER);
+                break;
+
         }
         mBuilder.setSmallIcon(R.drawable.label);// 设置通知小ICON
         mBuilder.setTicker(message.getSender_id()); // 通知首次出现在通知栏，带上升动画效果的

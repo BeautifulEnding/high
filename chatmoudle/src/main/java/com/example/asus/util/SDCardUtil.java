@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 import com.example.asus.client.entity.User;
+import com.example.asus.constant.Constant;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -160,7 +161,7 @@ public class SDCardUtil {
         file.delete();
     }
     public static boolean findMessage(String user_id){
-        String[] files=getAllFile(SDCardUtil.getSDCardPath() + "/high/requestFriend");
+        String[] files=getAllFile(Constant.SD_PATH+"requestFriend");
         for (int i=0;i<files.length;i++){
             LogUtil.e("fileName:   "+files[i]);
             if (files[i].equals(user_id+".txt")){
@@ -182,9 +183,9 @@ public class SDCardUtil {
         LogUtil.e("正在加载缓存");
         String response = null;
         if (fileName.equals("selfMessage")){
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/selfMessage", "selfMessage.txt");
+            response = SDCardUtil.get(context, Constant.SD_PATH+"selfMessage", "selfMessage.txt");
         }else{
-            response = SDCardUtil.get(context, SDCardUtil.getSDCardPath() +"/high/friends", fileName + ".txt");
+            response = SDCardUtil.get(context, Constant.SD_PATH+"friends", fileName + ".txt");
         }
         if (response != null) {
             User user=User.parse(response);

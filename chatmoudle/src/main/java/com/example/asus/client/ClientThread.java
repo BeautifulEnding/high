@@ -11,12 +11,15 @@ import com.example.asus.client.entity.MessageType;
 import com.example.asus.constant.Constant;
 import com.example.asus.util.CacUtil;
 import com.example.asus.util.LogUtil;
+import com.example.asus.util.NotificationUtil;
 import com.example.asus.util.SDCardUtil;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2016/11/15 0015.
@@ -29,6 +32,7 @@ public class ClientThread extends Thread{
     private BufferedReader reader;
     private Message message;
     private MessageList messageList;
+    private ClientThread clientThread;
     public ClientThread(Socket socket,Context context){
         this.socket=socket;
         this.context=context;
@@ -37,6 +41,7 @@ public class ClientThread extends Thread{
         }catch (Exception e){
             e.printStackTrace();
         }
+        clientThread=this;
     }
     @Override
     public void run(){
@@ -63,11 +68,12 @@ public class ClientThread extends Thread{
                             context.sendBroadcast(intent);
                             break;
                         case MessageType.COM_MES:case MessageType.PICTURE_MESSAGE:case MessageType.VOICE_MESSAGE:
-                            LogUtil.e("接收到普通消息");
                             if (MyApplication.getInstance().containActivity(ChatActivity.class)){
                             Intent intent2=new Intent("chat");
+                                message.setMessageType(1);
                             intent2.putExtra("message",message);
                             context.sendBroadcast(intent2);
+                                LogUtil.e("直接在聊天页面");
                             }else{
 //                                发送通知说有人发了消息
                                 Intent intent2=new Intent("add.friend.message");
@@ -84,6 +90,8 @@ public class ClientThread extends Thread{
                                 CacUtil.cacheSave(message.getSender_id(),context,messageList);
                             }
                             break;
+                        case MessageType.HELP_MESSAGE:case MessageType.TOGETHER_MESSAGE:case MessageType.ONE_MESSAGE:
+                            NotificationUtil.showHangNotification(message,context);
                         default:
                             LogUtil.e("该消息类型暂时未定义 消息类型："+message.getType());
                             break;

@@ -75,7 +75,7 @@ public class MessageAdapter extends BaseAdapter{
         Glide.with(mContext).load(Constant.USER_PHOTO+user.getProfile_image_url()).
                 placeholder(R.drawable.example_profileimg).dontAnimate().dontTransform().
                 into(holder.newIcon);
-        holder.newDate.setText(DateUtils.translateDate(messageList.get(position).getLastTime()));
+        holder.newDate.setText(DateUtils.translateDate(messageList.get(position).getLastTime(),System.currentTimeMillis()));
         holder.newTitle.setText(messageList.get(position).getTitle());
         if (messageList.get(position).getType()== MessageType.VOICE_MESSAGE){
             holder.newContent.setText("点击查看详情");

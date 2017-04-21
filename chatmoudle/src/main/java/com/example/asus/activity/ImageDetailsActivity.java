@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 
 import com.example.asus.R;
 import com.example.asus.view.ImageDetailTopBar;
 import com.example.asus.view.ImageDetailViewPager;
-import com.example.asus.view.ImageOptionPopupWindow;
 import com.example.asus.view.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class ImageDetailsActivity extends Activity implements ViewPagerAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.home_weiboitem_imagedetails);
+        setContentView(R.layout.home_imagedetails);
         mContext = ImageDetailsActivity.this;
         if (this.getIntent().hasExtra("dir")){
             mDatas=new ArrayList<>();

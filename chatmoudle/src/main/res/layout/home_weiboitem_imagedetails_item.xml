@@ -34,6 +34,5 @@
         custom:donut_max="100"
         custom:donut_text_color="#ffffff"
         custom:donut_unfinished_color="#000000" />
-    <!--home_weiboitem_imagedetails_item-->
 </RelativeLayout>
 

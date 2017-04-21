@@ -108,6 +108,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     private MessageList messageList;
     private String localCameraPath;
     private MyBroadcastReceiver br;
+    private boolean update=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +117,10 @@ public class ChatActivity extends Activity implements OnClickListener {
         Constant.CHAT_PATH=Constant.SD_PATH+"chat";
         selfUser= CacUtil.cacheLoad("selfMessage",this);
         friends=(User)getIntent().getSerializableExtra("friends");
+        if (friends==null){
+            friends=new User();
+            friends.setId("14045101");
+        }
         messageList=(MessageList)getIntent().getSerializableExtra("messageList");
         if (selfUser!=null){
             client=new Client(selfUser,this);
@@ -729,11 +734,14 @@ public class ChatActivity extends Activity implements OnClickListener {
     public void onDestroy() {
         // TODO Auto-generated method stub
         super.onDestroy();
-        messageList.setContent(messageList.getMessage().get(messageList.getMessage().size()-1).getContent());
-        messageList.setTitle(friends.getId());
-        messageList.setLastTime(messageList.getMessage().get(messageList.getMessage().size()-1).getSendTime());
-        messageList.setType(messageList.getMessage().get(messageList.getMessage().size()-1).getType());
-        CacUtil.cacheSave(friends.getId(),this,messageList);
+        if (messageList!=null && messageList.getMessage().size()!=0 && update){
+//            如果更新了消息列表
+            messageList.setContent(messageList.getMessage().get(messageList.getMessage().size()-1).getContent());
+            messageList.setTitle(friends.getId());
+            messageList.setLastTime(messageList.getMessage().get(messageList.getMessage().size()-1).getSendTime());
+            messageList.setType(messageList.getMessage().get(messageList.getMessage().size()-1).getType());
+            CacUtil.cacheSave(friends.getId(),this,messageList);
+        }
         if(bp != null && !bp.isRecycled()){
 
             // 回收并且置为null
@@ -741,10 +749,14 @@ public class ChatActivity extends Activity implements OnClickListener {
             bp = null;
         }
         MyApplication.getInstance().removeActivity(this);
+        unregisterReceiver(br);
         System.gc();
     }
 
     private void sendMessage(int messageType,String content,String photoPath){
+        if (!update){
+            update=true;
+        }
         Message message=new Message();
         message.setType(messageType);
         message.setContent(content);

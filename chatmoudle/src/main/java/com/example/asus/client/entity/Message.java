@@ -22,6 +22,14 @@ public class Message implements Serializable{
 //    本机图片位置
     String localPhoto;
     String localVoice;
+//    表示话题状态
+    int messageState;
+    public int getMessageState(){
+        return messageState;
+    }
+    public void setMessageState(int messageState){
+        this.messageState=messageState;
+    }
     public String getLocalVoice(){
         return localVoice;
     }

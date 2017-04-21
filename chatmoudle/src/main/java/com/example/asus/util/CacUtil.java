@@ -27,12 +27,22 @@ public class CacUtil {
 
     }
     public static void cacheSave(String fileName, Context context, MessageList messageList){
-        if (fileName.equals("requestFriend")){
-            String response = new Gson().toJson(messageList);
-            SDCardUtil.put(context, Constant.SD_PATH+"requestFriend", fileName+ ".txt", response);
-        }else{
-            String response = new Gson().toJson(messageList);
-            SDCardUtil.put(context, Constant.CHAT_PATH, fileName+ ".txt", response);
+        String response = new Gson().toJson(messageList);
+        switch (fileName){
+            case "helpMessage":
+                SDCardUtil.put(context, Constant.SD_PATH+"helpMessage", fileName+ ".txt", response);
+                break;
+            case "requestFriend":
+                SDCardUtil.put(context, Constant.SD_PATH+"requestFriend", fileName+ ".txt", response);
+                break;
+            case "togetherMessage":
+                SDCardUtil.put(context, Constant.SD_PATH+"togetherMessage", fileName+ ".txt", response);
+                break;
+            case "oneMessage":
+                SDCardUtil.put(context, Constant.SD_PATH+"oneMessage", fileName+ ".txt", response);
+                break;
+            default:
+                SDCardUtil.put(context, Constant.CHAT_PATH, fileName+ ".txt", response);
         }
     }
     public static void cacheSave(String fileName, Context context, Message message){
@@ -41,12 +51,19 @@ public class CacUtil {
             SDCardUtil.put(context, Constant.SD_PATH+"requestFriend", message.getSender_id()+ ".txt", response);
         }
     }
+    public static void cacheAppend(String fileName, Context context, Message message){
+        MessageList messageList= MessageList.parse(CacUtil.cacheLoad(0,context,fileName));
+        if (messageList==null){
+            messageList=new MessageList();
+        }
+        messageList.getMessage().add(message);
+        CacUtil.cacheSave(fileName,context,messageList);
+    }
     public static void cacheDelete(String user_id){
         SDCardUtil.deleteMessage(user_id,Constant.SD_PATH+"requestFriend");
 //        删除请求添加好友信息
     }
     public static User cacheLoad(String fileName, Context context) {
-        LogUtil.e("正在加载缓存");
         String response = null;
         if (fileName.equals("selfMessage")){
             response = SDCardUtil.get(context, Constant.SD_PATH+"selfMessage", "selfMessage.txt");
@@ -61,12 +78,12 @@ public class CacUtil {
     }
 
     public static String cacheLoad(int type, Context context,String fileName) {
-        LogUtil.e("正在加载缓存");
         String response = null;
         if (type==Constant.LOAD_MESSAGELIST){
             response = SDCardUtil.get(context,Constant.CHAT_PATH, fileName + ".txt");
         }else{
-            response = SDCardUtil.get(context, Constant.SD_PATH+"friends", fileName + ".txt");
+//            response = SDCardUtil.get(context, Constant.SD_PATH+"friends", fileName + ".txt");
+            response = SDCardUtil.get(context, Constant.SD_PATH+fileName, fileName + ".txt");
         }
         if (response != null) {
             return response;
